@@ -991,6 +991,48 @@
   .eb-contact-method:hover { transform: translateY(-3px); }
 }
 
+
+/* ── AJUSTES FINALES SOLICITADOS ─────────────────────────── */
+.eb-esp-num { color: rgba(36,50,37,.20) !important; }
+.eb-quote-block p { color: rgba(255,255,255,.96) !important; }
+.eb-review-text { color: rgba(255,255,255,.94) !important; }
+.eb-tarifa-badge { background: var(--g) !important; color: var(--wh) !important; }
+.eb-form-group select {
+  padding-right: 46px !important;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%232D3B2E' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 18px 18px !important;
+}
+.eb-footer-col a { color: rgba(255,255,255,.88); }
+.eb-footer-contact { display: flex; flex-direction: column; align-items: flex-start; }
+.eb-footer-contact-link {
+  display: flex !important;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  min-height: 34px;
+  margin-bottom: 12px !important;
+  color: rgba(255,255,255,.92) !important;
+  line-height: 1.35;
+}
+.eb-footer-contact-link:hover { color: var(--wh) !important; }
+.eb-footer-contact-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+}
+.eb-footer-contact-icon .eb-icon-svg { width: 17px; height: 17px; }
+.eb-footer-contact-icon .eb-icon-gmail { width: 19px; height: 19px; }
+.eb-footer-contact-icon .eb-icon-location { color: var(--go); }
+.eb-footer-contact-icon .eb-icon-calendar { color: var(--go); }
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1080,10 +1122,6 @@
             <span>Dietista colegiada</span>
           </div>
           <div class="eb-hero-trust-item">
-            <div class="eb-hero-trust-icon">🌿</div>
-            <span>Sin cultura de la dieta</span>
-          </div>
-          <div class="eb-hero-trust-item">
             <div class="eb-hero-trust-icon">🌐</div>
             <span>Consulta online</span>
           </div>
@@ -1099,10 +1137,6 @@
         <div class="eb-hero-img-badge">
           <div class="eb-hero-img-badge-num">+5</div>
           <div class="eb-hero-img-badge-txt">años acompañando pacientes</div>
-        </div>
-        <div class="eb-hero-img-badge2">
-          <span>100%</span>
-          Basado en evidencia científica
         </div>
       </div>
     </div>
@@ -1916,12 +1950,6 @@
             <span class="eb-contact-method-arrow">→</span>
           </a>
         </div>
-        <a href="https://www.instagram.com/elsabuendia.nutricion/" target="_blank" rel="noopener"
-           style="display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--txl);transition:color .2s"
-           onmouseover="this.style.color='var(--g)'" onmouseout="this.style.color='var(--txl)'">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          @elsabuendia.nutricion
-        </a>
       </div>
       <div class="eb-form eb-fade eb-fade-delay-2">
         <h3 class="eb-form-title">Envíame un mensaje</h3>
@@ -2021,12 +2049,24 @@
         <a href="#eb-tarifas"         onclick="ebSmoothScroll(event,'#eb-tarifas')">Tarifas</a>
         <a href="#eb-faq"             onclick="ebSmoothScroll(event,'#eb-faq')">FAQ</a>
       </div>
-      <div class="eb-footer-col">
+      <div class="eb-footer-col eb-footer-contact">
         <h4>Contacto</h4>
-        <a href="https://wa.me/34652043287" target="_blank">💬 +34 652 04 32 87</a>
-        <a href="mailto:hola@elsabuendianutricion.com">✉️ hola@elsabuendianutricion.com</a>
-        <a href="#eb-ubicacion" onclick="ebSmoothScroll(event,'#eb-ubicacion')">📍 L'Eliana (Valencia)</a>
-        <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank">📅 Pedir cita online</a>
+        <a href="https://wa.me/34652043287" target="_blank" rel="noopener" class="eb-footer-contact-link">
+          <span class="eb-footer-contact-icon"><svg class="eb-icon-svg eb-icon-whatsapp" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.051 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26C2.168 6.443 6.603 2.009 12.055 2.009c2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg></span>
+          <span>+34 652 04 32 87</span>
+        </a>
+        <a href="mailto:hola@elsabuendianutricion.com" class="eb-footer-contact-link">
+          <span class="eb-footer-contact-icon"><svg class="eb-icon-svg eb-icon-gmail" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 27.6 6 14.2V38c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V14.2L24 27.6Z"/><path fill="#FBBC04" d="M6 14.2 24 27.6 42 14.2V10c0-2.2-1.8-4-4-4H10c-2.2 0-4 1.8-4 4v4.2Z"/><path fill="#34A853" d="M6 14.2V38c0 2.2 1.8 4 4 4h4V20.1L6 14.2Z"/><path fill="#4285F4" d="M34 20.1V42h4c2.2 0 4-1.8 4-4V14.2l-8 5.9Z"/></svg></span>
+          <span>hola@elsabuendianutricion.com</span>
+        </a>
+        <a href="#eb-ubicacion" onclick="ebSmoothScroll(event,'#eb-ubicacion')" class="eb-footer-contact-link">
+          <span class="eb-footer-contact-icon"><svg class="eb-icon-svg eb-icon-location" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10.5c0 5.5-8 11-8 11s-8-5.5-8-11a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10.5" r="2.6"/></svg></span>
+          <span>L'Eliana (Valencia)</span>
+        </a>
+        <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" rel="noopener" class="eb-footer-contact-link">
+          <span class="eb-footer-contact-icon"><svg class="eb-icon-svg eb-icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="4"/><path d="M8 2.5v4M16 2.5v4M3 9h18"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/></svg></span>
+          <span>Pedir cita online</span>
+        </a>
       </div>
       <div class="eb-footer-col">
         <h4>Legal</h4>
