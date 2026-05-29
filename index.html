@@ -1,4 +1,4 @@
-<!-- VERSION VERIFICADA V3 AJUSTES VISUALES SOLICITADOS 2026-05-29 -->
+<!-- VERSION VERIFICADA V5 AJUSTE HERO TRUST E INICIO MENU 2026-05-29 -->
 <!-- VERSION VERIFICADA V4 AJUSTES FINALES FOOTER SLIDER PROCESO 2026-05-29 -->
 <!-- ============================================================
      ELSA BUENDÍA NUTRICIÓN · Web completa autocontenida
@@ -1125,6 +1125,39 @@
   }
 }
 
+
+
+/* ============================================================
+   AJUSTES VERIFICADOS V5
+   Hero trust ajustado al contenido e inicio añadido al menú.
+   ============================================================ */
+#eb-wrap #eb-hero .eb-hero-trust {
+  display: inline-flex !important;
+  width: auto !important;
+  max-width: 100% !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 18px !important;
+  padding: 14px 18px !important;
+  border-radius: 22px !important;
+}
+#eb-wrap #eb-hero .eb-hero-trust-item {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+@media (max-width: 480px) {
+  #eb-wrap #eb-hero .eb-hero-trust {
+    display: flex !important;
+    width: 100% !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+  }
+  #eb-wrap #eb-hero .eb-hero-trust-item {
+    white-space: normal !important;
+  }
+}
+
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1154,6 +1187,7 @@
       </a>
       <!-- NAV DESKTOP -->
       <nav class="eb-nav">
+        <a href="#eb-hero"         onclick="ebSmoothScroll(event,'#eb-hero')">Inicio</a>
         <a href="#eb-sobre"        onclick="ebSmoothScroll(event,'#eb-sobre')">Sobre mí</a>
         <a href="#eb-especialidades" onclick="ebSmoothScroll(event,'#eb-especialidades')">Especialidades</a>
         <a href="#eb-servicios"    onclick="ebSmoothScroll(event,'#eb-servicios')">Servicios</a>
@@ -1171,6 +1205,7 @@
 
 <!-- MENÚ MÓVIL -->
 <nav class="eb-mobile-nav" id="eb-mobile-nav">
+  <a href="#eb-hero"            onclick="ebSmoothScroll(event,'#eb-hero');ebCloseMenu()">Inicio</a>
   <a href="#eb-sobre"           onclick="ebSmoothScroll(event,'#eb-sobre');ebCloseMenu()">Sobre mí</a>
   <a href="#eb-quien"           onclick="ebSmoothScroll(event,'#eb-quien');ebCloseMenu()">¿A quién acompaño?</a>
   <a href="#eb-especialidades"  onclick="ebSmoothScroll(event,'#eb-especialidades');ebCloseMenu()">Especialidades</a>
