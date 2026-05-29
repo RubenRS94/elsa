@@ -1,4 +1,4 @@
-<!-- VERSION VERIFICADA V5 AJUSTE HERO TRUST E INICIO MENU 2026-05-29 -->
+<!-- VERSION VERIFICADA V6 HEADER INICIO HERO TRUST REVISADO 2026-05-29 -->
 <!-- VERSION VERIFICADA V4 AJUSTES FINALES FOOTER SLIDER PROCESO 2026-05-29 -->
 <!-- ============================================================
      ELSA BUENDÍA NUTRICIÓN · Web completa autocontenida
@@ -1155,6 +1155,73 @@
   }
   #eb-wrap #eb-hero .eb-hero-trust-item {
     white-space: normal !important;
+  }
+}
+
+
+
+/* ============================================================
+   AJUSTES VERIFICADOS V6
+   Revisión final de header, hero trust y cambios solicitados.
+   ============================================================ */
+#eb-wrap #eb-header .eb-header-inner {
+  gap: 18px !important;
+}
+#eb-wrap #eb-header .eb-nav {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+  min-width: 0 !important;
+}
+#eb-wrap #eb-header .eb-nav a {
+  white-space: nowrap !important;
+  font-size: .84rem !important;
+  padding: 6px 11px !important;
+}
+#eb-wrap #eb-header .eb-nav a.eb-nav-cta {
+  padding: 8px 16px !important;
+}
+#eb-wrap #eb-hero .eb-hero-trust {
+  display: inline-flex !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 16px !important;
+  padding: 14px 18px !important;
+  border-radius: 22px !important;
+  flex-wrap: wrap !important;
+}
+#eb-wrap #eb-hero .eb-hero-trust-item {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+}
+#eb-wrap #eb-hero .eb-hero-trust .eb-hero-trust-item:nth-child(n+3),
+#eb-wrap #eb-hero .eb-hero-img-badge2 {
+  display: none !important;
+}
+@media (max-width: 1100px) and (min-width: 769px) {
+  #eb-wrap #eb-header .eb-logo-name { font-size: 1.05rem !important; }
+  #eb-wrap #eb-header .eb-logo-tag { font-size: .62rem !important; }
+  #eb-wrap #eb-header .eb-nav a { font-size: .80rem !important; padding: 6px 8px !important; }
+  #eb-wrap #eb-header .eb-nav a.eb-nav-cta { padding: 8px 12px !important; }
+}
+@media (max-width: 768px) {
+  #eb-wrap #eb-header .eb-nav { display: none !important; }
+  #eb-wrap #eb-hero .eb-hero-trust {
+    width: fit-content !important;
+    max-width: 100% !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 12px 14px !important;
+  }
+}
+@media (max-width: 420px) {
+  #eb-wrap #eb-hero .eb-hero-trust {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }
 
