@@ -1,0 +1,2223 @@
+<!-- ============================================================
+     ELSA BUENDÍA NUTRICIÓN · Web completa autocontenida
+     Para pegar en: WordPress > Página > Bloque HTML personalizado
+     (o Elementor > Widget HTML)
+     Prefijo de clases: .eb-  para evitar conflictos con WP/Elementor
+     ============================================================ -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+.eb-wrap *,
+.eb-wrap *::before,
+.eb-wrap *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.eb-wrap { --g: #2D3B2E; --gm: #7A9E7E; --gl: #EAF2EB; --cr: #F5F0E8; --go: #C8A97A; --wh: #FFFFFF;
+           --tx: #1A1A1A; --txm: #4A4A42; --txl: #7A7A72; --bd: rgba(45,59,46,.12);
+           font-family: 'DM Sans', sans-serif; color: var(--tx); background: var(--wh); overflow-x: hidden; }
+.eb-wrap a { text-decoration: none; color: inherit; }
+.eb-wrap img { max-width: 100%; display: block; }
+.eb-wrap ul { list-style: none; }
+.eb-wrap button { cursor: pointer; font-family: inherit; border: none; background: none; }
+
+/* ── TYPOGRAPHY ───────────────────────────────────────────── */
+.eb-serif { font-family: 'Cormorant Garamond', serif; }
+.eb-wrap h1,.eb-wrap h2,.eb-wrap h3 { font-family: 'Cormorant Garamond', serif; font-weight: 600; line-height: 1.15; }
+.eb-wrap h1 { font-size: clamp(2.4rem, 6vw, 4rem); }
+.eb-wrap h2 { font-size: clamp(1.9rem, 4vw, 3rem); }
+.eb-wrap h3 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); }
+.eb-wrap p  { font-size: 1rem; line-height: 1.75; color: var(--txm); }
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.eb-btn { display: inline-flex; align-items: center; gap: .5rem; padding: 14px 32px;
+          border-radius: 50px; font-size: .92rem; font-weight: 500; letter-spacing: .03em;
+          transition: all .25s ease; cursor: pointer; }
+.eb-btn-primary { background: var(--g); color: var(--wh); }
+.eb-btn-primary:hover { background: #3d5040; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(45,59,46,.25); }
+.eb-btn-secondary { background: transparent; color: var(--g); border: 1.5px solid var(--g); }
+.eb-btn-secondary:hover { background: var(--gl); transform: translateY(-2px); }
+.eb-btn-gold { background: var(--go); color: var(--wh); }
+.eb-btn-gold:hover { background: #b8966a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,169,122,.3); }
+
+/* ── SECTION LAYOUT ───────────────────────────────────────── */
+.eb-section { padding: 90px 0; }
+.eb-section-cream { background: var(--cr); }
+.eb-section-green { background: var(--gl); }
+.eb-section-dark  { background: var(--g); }
+.eb-container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.eb-section-label { font-size: .75rem; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+                    color: var(--gm); margin-bottom: 12px; display: block; }
+.eb-section-title { margin-bottom: 16px; }
+.eb-section-title em { font-style: italic; color: var(--gm); }
+.eb-section-sub { font-size: 1.05rem; color: var(--txm); max-width: 600px; line-height: 1.7; margin-bottom: 48px; }
+.eb-divider { width: 48px; height: 2px; background: var(--go); border-radius: 2px; margin: 20px 0 40px; }
+
+/* ── ANIMATIONS ───────────────────────────────────────────── */
+.eb-fade { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+.eb-fade.eb-visible { opacity: 1; transform: none; }
+.eb-fade-delay-1 { transition-delay: .1s; }
+.eb-fade-delay-2 { transition-delay: .2s; }
+.eb-fade-delay-3 { transition-delay: .3s; }
+.eb-fade-delay-4 { transition-delay: .4s; }
+.eb-fade-delay-5 { transition-delay: .5s; }
+
+/* ── HEADER ───────────────────────────────────────────────── */
+#eb-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+             padding: 18px 0; transition: all .35s ease; }
+#eb-header.eb-scrolled { background: rgba(255,255,255,.97); backdrop-filter: blur(12px);
+                          box-shadow: 0 1px 24px rgba(45,59,46,.1); padding: 12px 0; }
+.eb-header-inner { display: flex; align-items: center; justify-content: space-between; }
+.eb-logo { display: flex; align-items: center; gap: 10px; }
+.eb-logo-svg { width: 36px; height: 36px; flex-shrink: 0; }
+.eb-logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.eb-logo-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 600; color: var(--g); letter-spacing: .01em; }
+.eb-logo-tag  { font-size: .68rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--gm); }
+.eb-nav { display: flex; align-items: center; gap: 8px; }
+.eb-nav a { font-size: .88rem; font-weight: 500; color: var(--txm); padding: 6px 14px; border-radius: 50px;
+             transition: all .2s; position: relative; }
+.eb-nav a:hover { color: var(--g); background: var(--gl); }
+.eb-nav-cta { background: var(--g) !important; color: var(--wh) !important; padding: 8px 20px !important; }
+.eb-nav-cta:hover { background: #3d5040 !important; box-shadow: 0 4px 16px rgba(45,59,46,.25); }
+.eb-hamburger { display: none; flex-direction: column; gap: 5px; padding: 6px; cursor: pointer; }
+.eb-hamburger span { display: block; width: 24px; height: 2px; background: var(--g); border-radius: 2px;
+                     transition: all .3s ease; transform-origin: center; }
+.eb-hamburger.eb-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.eb-hamburger.eb-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.eb-hamburger.eb-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.eb-mobile-nav { display: none; position: fixed; top: 0; right: 0; bottom: 0; width: min(320px, 85vw);
+                 background: var(--wh); z-index: 999; padding: 80px 32px 40px;
+                 box-shadow: -8px 0 48px rgba(45,59,46,.15); flex-direction: column; gap: 8px;
+                 transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); }
+.eb-mobile-nav.eb-open { transform: translateX(0); }
+.eb-mobile-nav a { font-size: 1.1rem; font-weight: 500; color: var(--tx); padding: 14px 0;
+                    border-bottom: 1px solid var(--bd); display: block; transition: color .2s; }
+.eb-mobile-nav a:hover { color: var(--gm); }
+.eb-mobile-nav .eb-nav-cta { background: var(--g) !important; color: var(--wh) !important;
+                               border-radius: 50px; text-align: center; margin-top: 16px;
+                               border-bottom: none !important; padding: 14px 20px; }
+.eb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 998; }
+.eb-overlay.eb-open { display: block; }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+#eb-hero { min-height: 100vh; background: var(--cr); display: flex; align-items: center;
+           padding-top: 100px; position: relative; overflow: hidden; }
+.eb-hero-bg-deco { position: absolute; top: -80px; right: -80px; width: 500px; height: 500px;
+                   background: radial-gradient(circle, rgba(122,158,126,.18) 0%, transparent 70%);
+                   border-radius: 50%; pointer-events: none; }
+.eb-hero-bg-deco2 { position: absolute; bottom: -60px; left: -40px; width: 340px; height: 340px;
+                    background: radial-gradient(circle, rgba(200,169,122,.12) 0%, transparent 70%);
+                    border-radius: 50%; pointer-events: none; }
+.eb-hero-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.eb-hero-content { position: relative; z-index: 1; }
+.eb-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--wh);
+                  border: 1px solid var(--bd); border-radius: 50px; padding: 6px 16px 6px 8px;
+                  font-size: .8rem; font-weight: 500; color: var(--g); margin-bottom: 28px;
+                  box-shadow: 0 2px 12px rgba(45,59,46,.08); }
+.eb-hero-badge-dot { width: 8px; height: 8px; background: var(--gm); border-radius: 50%;
+                      animation: eb-pulse 2s infinite; }
+@keyframes eb-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+.eb-hero-title { margin-bottom: 20px; }
+.eb-hero-title em { color: var(--gm); font-style: italic; }
+.eb-hero-sub { font-size: 1.1rem; color: var(--txm); line-height: 1.8; margin-bottom: 36px; max-width: 480px; }
+.eb-hero-ctas { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 48px; }
+.eb-hero-trust { display: flex; align-items: center; gap: 20px; padding-top: 32px;
+                  border-top: 1px solid var(--bd); flex-wrap: wrap; }
+.eb-hero-trust-item { display: flex; align-items: center; gap: 8px; font-size: .82rem;
+                       font-weight: 500; color: var(--txm); }
+.eb-hero-trust-icon { width: 32px; height: 32px; background: var(--gl); border-radius: 50%;
+                       display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+.eb-hero-img-wrap { position: relative; }
+.eb-hero-img-frame { border-radius: 40% 60% 55% 45% / 45% 40% 60% 55%;
+                     overflow: hidden; aspect-ratio: 4/5; position: relative;
+                     box-shadow: 0 32px 80px rgba(45,59,46,.2); }
+.eb-hero-img-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.eb-hero-img-deco { position: absolute; bottom: -20px; left: -20px; width: 120px; height: 120px;
+                    background: var(--go); border-radius: 50%; opacity: .15; }
+.eb-hero-img-badge { position: absolute; top: 24px; left: -24px; background: var(--wh);
+                      border-radius: 16px; padding: 12px 18px; box-shadow: 0 8px 32px rgba(45,59,46,.15);
+                      display: flex; align-items: center; gap: 10px; }
+.eb-hero-img-badge-num { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 700; color: var(--g); line-height: 1; }
+.eb-hero-img-badge-txt { font-size: .72rem; font-weight: 500; color: var(--txl); line-height: 1.3; max-width: 70px; }
+.eb-hero-img-badge2 { position: absolute; bottom: 40px; right: -24px; background: var(--g);
+                       border-radius: 16px; padding: 12px 18px; box-shadow: 0 8px 32px rgba(45,59,46,.25);
+                       color: var(--wh); font-size: .78rem; font-weight: 500; line-height: 1.4; }
+.eb-hero-img-badge2 span { display: block; font-family: 'Cormorant Garamond', serif;
+                            font-size: 1.1rem; font-weight: 700; color: var(--go); }
+
+/* ── SOBRE MI ─────────────────────────────────────────────── */
+#eb-sobre { padding: 100px 0; }
+.eb-sobre-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.eb-sobre-img { position: relative; }
+.eb-sobre-img-frame { border-radius: 24px; overflow: hidden; aspect-ratio: 3/4;
+                       box-shadow: 0 24px 60px rgba(45,59,46,.15); }
+.eb-sobre-img-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+.eb-sobre-img-deco { position: absolute; bottom: -16px; right: -16px; width: 180px; height: 180px;
+                     background: var(--gl); border-radius: 24px; z-index: -1; }
+.eb-sobre-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.eb-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--gl);
+             border: 1px solid rgba(122,158,126,.3); color: var(--g); border-radius: 50px;
+             padding: 5px 14px; font-size: .78rem; font-weight: 500; }
+.eb-sobre-text p { margin-bottom: 16px; }
+.eb-sobre-valores { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.eb-valor-item { display: flex; align-items: flex-start; gap: 12px; }
+.eb-valor-icon { width: 40px; height: 40px; background: var(--gl); border-radius: 12px; flex-shrink: 0;
+                  display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+.eb-valor-text { font-size: .88rem; font-weight: 500; color: var(--g); line-height: 1.4; }
+.eb-valor-sub  { font-size: .78rem; color: var(--txl); margin-top: 2px; }
+
+/* ── A QUIEN ACOMPANO ─────────────────────────────────────── */
+#eb-quien { padding: 100px 0; background: var(--cr); }
+.eb-quien-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.eb-quien-card { background: var(--wh); border-radius: 24px; padding: 36px 28px;
+                  border: 1px solid var(--bd); transition: all .3s ease; position: relative; overflow: hidden; }
+.eb-quien-card::before { content: ''; position: absolute; inset: 0; background: var(--gl);
+                          opacity: 0; transition: opacity .3s; }
+.eb-quien-card:hover { transform: translateY(-6px); box-shadow: 0 20px 48px rgba(45,59,46,.12); }
+.eb-quien-card:hover::before { opacity: 1; }
+.eb-quien-card > * { position: relative; z-index: 1; }
+.eb-quien-icon { font-size: 2.4rem; margin-bottom: 20px; display: block; }
+.eb-quien-card h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--g); }
+.eb-quien-card p  { font-size: .88rem; color: var(--txm); line-height: 1.65; }
+
+/* ── ESPECIALIDADES ───────────────────────────────────────── */
+#eb-especialidades { padding: 100px 0; }
+.eb-esp-header { display: flex; justify-content: space-between; align-items: flex-end;
+                  margin-bottom: 56px; flex-wrap: wrap; gap: 24px; }
+.eb-esp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.eb-esp-card { border: 1px solid var(--bd); border-radius: 20px; padding: 32px 28px;
+                transition: all .3s; position: relative; overflow: hidden; background: var(--wh); }
+.eb-esp-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+                       background: var(--gm); transform: scaleX(0); transition: transform .3s;
+                       transform-origin: left; }
+.eb-esp-card:hover { border-color: rgba(122,158,126,.5); box-shadow: 0 12px 40px rgba(45,59,46,.1); transform: translateY(-4px); }
+.eb-esp-card:hover::after { transform: scaleX(1); }
+.eb-esp-num { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 300;
+               color: rgba(45,59,46,.08); line-height: 1; margin-bottom: 8px; }
+.eb-esp-icon { font-size: 1.6rem; margin-bottom: 16px; }
+.eb-esp-card h3 { font-size: 1.1rem; margin-bottom: 10px; color: var(--g); }
+.eb-esp-card p  { font-size: .85rem; color: var(--txm); line-height: 1.65; }
+.eb-esp-cta-wrap { text-align: center; margin-top: 56px; }
+.eb-esp-cta-text { font-size: 1rem; color: var(--txm); margin-bottom: 16px; }
+
+/* ── SERVICIOS ────────────────────────────────────────────── */
+#eb-servicios { padding: 100px 0; background: var(--cr); }
+.eb-servicios-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.eb-servicio-card { background: var(--wh); border-radius: 28px; padding: 48px 36px;
+                    border: 1px solid var(--bd); transition: all .3s; display: flex;
+                    flex-direction: column; }
+.eb-servicio-card:hover { transform: translateY(-8px); box-shadow: 0 24px 64px rgba(45,59,46,.14); }
+.eb-servicio-card.eb-featured { background: var(--g); color: var(--wh); border-color: var(--g); }
+.eb-servicio-card.eb-featured p { color: rgba(255,255,255,.75); }
+.eb-servicio-card.eb-featured h3 { color: var(--wh); }
+.eb-servicio-icon-wrap { width: 60px; height: 60px; border-radius: 18px; background: var(--gl);
+                          display: flex; align-items: center; justify-content: center;
+                          font-size: 1.6rem; margin-bottom: 28px; }
+.eb-featured .eb-servicio-icon-wrap { background: rgba(255,255,255,.15); }
+.eb-servicio-card h3 { font-size: 1.3rem; margin-bottom: 10px; color: var(--g); }
+.eb-servicio-subtitle { font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+                         color: var(--gm); margin-bottom: 16px; }
+.eb-featured .eb-servicio-subtitle { color: rgba(200,169,122,.9); }
+.eb-servicio-card p { font-size: .9rem; line-height: 1.7; margin-bottom: 24px; flex: 1; }
+.eb-featured .eb-btn-secondary { border-color: rgba(255,255,255,.4); color: var(--wh); }
+.eb-featured .eb-btn-secondary:hover { background: rgba(255,255,255,.1); }
+
+/* ── COMO TRABAJO ─────────────────────────────────────────── */
+#eb-proceso { padding: 100px 0; }
+.eb-proceso-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.eb-proceso-steps { display: flex; flex-direction: column; gap: 0; }
+.eb-step { display: flex; gap: 24px; position: relative; padding-bottom: 40px; }
+.eb-step:last-child { padding-bottom: 0; }
+.eb-step-line { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.eb-step-num { width: 48px; height: 48px; background: var(--g); color: var(--wh); border-radius: 50%;
+               display: flex; align-items: center; justify-content: center;
+               font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; flex-shrink: 0; }
+.eb-step-connector { width: 1px; flex: 1; background: var(--bd); margin-top: 8px; min-height: 40px; }
+.eb-step:last-child .eb-step-connector { display: none; }
+.eb-step-content { padding-top: 10px; }
+.eb-step-content h3 { font-size: 1.15rem; margin-bottom: 8px; color: var(--g); }
+.eb-step-content p  { font-size: .9rem; color: var(--txm); line-height: 1.7; }
+.eb-proceso-right { }
+.eb-pilares { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 40px; }
+.eb-pilar { background: var(--cr); border-radius: 16px; padding: 20px; }
+.eb-pilar-icon { font-size: 1.4rem; margin-bottom: 10px; }
+.eb-pilar h4 { font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600;
+               color: var(--g); margin-bottom: 4px; }
+.eb-pilar p  { font-size: .8rem; color: var(--txl); line-height: 1.5; }
+.eb-quote-block { background: var(--g); border-radius: 24px; padding: 32px 36px; color: var(--wh); position: relative; }
+.eb-quote-mark { font-family: 'Cormorant Garamond', serif; font-size: 5rem; color: var(--go);
+                  line-height: .7; margin-bottom: 12px; display: block; }
+.eb-quote-block p { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-style: italic;
+                    color: rgba(255,255,255,.9); line-height: 1.7; }
+.eb-quote-block cite { display: block; margin-top: 16px; font-size: .8rem; font-style: normal;
+                        color: rgba(200,169,122,.9); font-weight: 500; }
+
+/* ── TARIFAS ──────────────────────────────────────────────── */
+#eb-tarifas { padding: 100px 0; background: var(--cr); }
+.eb-tarifas-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.eb-tarifa-card { background: var(--wh); border-radius: 28px; padding: 40px 32px;
+                   border: 1.5px solid var(--bd); transition: all .3s; display: flex; flex-direction: column; }
+.eb-tarifa-card.eb-pop { border-color: var(--gm); box-shadow: 0 16px 48px rgba(45,59,46,.12); }
+.eb-tarifa-card:hover { transform: translateY(-6px); box-shadow: 0 20px 56px rgba(45,59,46,.14); }
+.eb-tarifa-badge { display: inline-block; background: var(--gl); color: var(--g); border-radius: 50px;
+                    font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+                    padding: 4px 14px; margin-bottom: 20px; }
+.eb-pop .eb-tarifa-badge { background: var(--g); color: var(--wh); }
+.eb-tarifa-card h3 { font-size: 1.3rem; margin-bottom: 8px; color: var(--g); }
+.eb-tarifa-desc { font-size: .85rem; color: var(--txl); margin-bottom: 24px; line-height: 1.6; }
+.eb-tarifa-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 8px; }
+.eb-tarifa-eur { font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; font-weight: 700; color: var(--g); line-height: 1; }
+.eb-tarifa-suffix { font-size: .85rem; color: var(--txl); }
+.eb-tarifa-note { font-size: .78rem; color: var(--txl); margin-bottom: 28px; }
+.eb-tarifa-features { list-style: none; margin-bottom: 32px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.eb-tarifa-features li { display: flex; align-items: flex-start; gap: 10px; font-size: .88rem; color: var(--txm); }
+.eb-tarifa-features li::before { content: '✓'; color: var(--gm); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+/* ── FAQ ──────────────────────────────────────────────────── */
+#eb-faq { padding: 100px 0; }
+.eb-faq-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+.eb-faq-list { display: flex; flex-direction: column; gap: 8px; }
+.eb-faq-item { border: 1px solid var(--bd); border-radius: 16px; overflow: hidden;
+                transition: border-color .2s; }
+.eb-faq-item.eb-open { border-color: rgba(122,158,126,.4); }
+.eb-faq-q { display: flex; justify-content: space-between; align-items: center; gap: 16px;
+             padding: 20px 24px; cursor: pointer; font-weight: 500; font-size: .95rem; color: var(--tx);
+             transition: background .2s; }
+.eb-faq-q:hover { background: var(--gl); }
+.eb-faq-item.eb-open .eb-faq-q { background: var(--gl); color: var(--g); }
+.eb-faq-chevron { width: 20px; height: 20px; flex-shrink: 0; transition: transform .3s; }
+.eb-faq-item.eb-open .eb-faq-chevron { transform: rotate(180deg); }
+.eb-faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s; }
+.eb-faq-item.eb-open .eb-faq-a { max-height: 400px; }
+.eb-faq-a-inner { padding: 0 24px 20px; font-size: .9rem; color: var(--txm); line-height: 1.75; }
+
+/* ── TESTIMONIOS ──────────────────────────────────────────── */
+#eb-testimonios { padding: 100px 0; background: var(--g); overflow: hidden; }
+#eb-testimonios .eb-section-label { color: var(--go); }
+#eb-testimonios .eb-section-title { color: var(--wh); }
+#eb-testimonios .eb-section-title em { color: var(--go); }
+#eb-testimonios .eb-divider { background: var(--go); }
+.eb-slider-wrap { position: relative; overflow: hidden; }
+.eb-slider-track { display: flex; transition: transform .5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+.eb-review-card { flex: 0 0 calc(33.333% - 14px); margin-right: 20px; background: rgba(255,255,255,.06);
+                   border: 1px solid rgba(255,255,255,.1); border-radius: 24px; padding: 32px 28px;
+                   backdrop-filter: blur(8px); display: flex; flex-direction: column; gap: 16px; min-height: 260px; }
+.eb-review-top { display: flex; align-items: center; gap: 14px; }
+.eb-review-avatar { width: 52px; height: 52px; border-radius: 50%; object-fit: cover;
+                     background: rgba(255,255,255,.12); flex-shrink: 0; display: flex;
+                     align-items: center; justify-content: center; overflow: hidden; }
+.eb-review-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.eb-review-avatar-placeholder { width: 100%; height: 100%; display: flex; align-items: center;
+                                  justify-content: center; font-family: 'Cormorant Garamond', serif;
+                                  font-size: 1.3rem; font-weight: 600; color: rgba(255,255,255,.5); }
+.eb-review-meta { flex: 1; }
+.eb-review-name { font-weight: 600; font-size: .95rem; color: var(--wh); }
+.eb-review-verified { display: flex; align-items: center; gap: 5px; font-size: .72rem;
+                        color: rgba(255,255,255,.5); margin-top: 2px; }
+.eb-review-verified svg { width: 12px; height: 12px; }
+.eb-google-logo { margin-left: auto; flex-shrink: 0; }
+.eb-stars { display: flex; gap: 2px; }
+.eb-stars svg { width: 15px; height: 15px; fill: #FBBC04; }
+.eb-review-text { font-size: .88rem; color: rgba(255,255,255,.75); line-height: 1.75;
+                   flex: 1; font-style: italic; }
+.eb-slider-controls { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 40px; }
+.eb-slider-btn { width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,.2);
+                  background: transparent; color: var(--wh); display: flex; align-items: center; justify-content: center;
+                  cursor: pointer; transition: all .25s; font-size: 1.2rem; }
+.eb-slider-btn:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.4); }
+.eb-slider-dots { display: flex; gap: 8px; }
+.eb-slider-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.25);
+                  cursor: pointer; transition: all .3s; }
+.eb-slider-dot.eb-active { background: var(--go); width: 24px; border-radius: 4px; }
+
+/* ── UBICACION ────────────────────────────────────────────── */
+#eb-ubicacion { padding: 100px 0; }
+.eb-ubicacion-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+.eb-loc-cards { display: flex; flex-direction: column; gap: 20px; }
+.eb-loc-card { background: var(--wh); border: 1px solid var(--bd); border-radius: 24px; padding: 32px; transition: all .3s; }
+.eb-loc-card:hover { border-color: rgba(122,158,126,.4); box-shadow: 0 12px 36px rgba(45,59,46,.1); }
+.eb-loc-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.eb-loc-icon { width: 48px; height: 48px; border-radius: 14px; background: var(--gl);
+               display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+.eb-loc-card h3 { font-size: 1.1rem; color: var(--g); margin-bottom: 2px; }
+.eb-loc-card-sub { font-size: .78rem; color: var(--txl); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.eb-loc-addr { font-size: .9rem; color: var(--txm); line-height: 1.7; margin-bottom: 20px; }
+.eb-loc-map-wrap { border-radius: 24px; overflow: hidden; height: 340px; border: 1px solid var(--bd); }
+.eb-loc-map-wrap iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+/* ── CONTACTO ─────────────────────────────────────────────── */
+#eb-contacto { padding: 100px 0; background: var(--cr); }
+.eb-contacto-inner { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: start; }
+.eb-contact-methods { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
+.eb-contact-method { display: flex; align-items: center; gap: 16px; background: var(--wh);
+                      border: 1px solid var(--bd); border-radius: 16px; padding: 18px 20px;
+                      transition: all .25s; text-decoration: none; color: inherit; }
+.eb-contact-method:hover { border-color: var(--gm); box-shadow: 0 6px 20px rgba(45,59,46,.08); transform: translateX(4px); }
+.eb-contact-method-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--gl);
+                           display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+.eb-contact-method-text { flex: 1; }
+.eb-contact-method-label { font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--txl); }
+.eb-contact-method-value { font-size: .92rem; font-weight: 500; color: var(--tx); margin-top: 2px; }
+.eb-contact-method-arrow { color: var(--txl); font-size: 1rem; }
+.eb-form { background: var(--wh); border-radius: 28px; padding: 44px 40px;
+           box-shadow: 0 12px 48px rgba(45,59,46,.08); border: 1px solid var(--bd); }
+.eb-form-title { font-size: 1.4rem; margin-bottom: 6px; color: var(--g); }
+.eb-form-sub { font-size: .88rem; color: var(--txl); margin-bottom: 28px; line-height: 1.6; }
+.eb-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.eb-form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.eb-form-group label { font-size: .82rem; font-weight: 500; color: var(--tx); }
+.eb-form-group input,
+.eb-form-group select,
+.eb-form-group textarea { border: 1.5px solid var(--bd); border-radius: 12px; padding: 12px 16px;
+                            font-family: 'DM Sans', sans-serif; font-size: .9rem; color: var(--tx);
+                            background: var(--wh); transition: border-color .2s, box-shadow .2s;
+                            outline: none; width: 100%; }
+.eb-form-group input:focus,
+.eb-form-group select:focus,
+.eb-form-group textarea:focus { border-color: var(--gm); box-shadow: 0 0 0 3px rgba(122,158,126,.12); }
+.eb-form-group textarea { resize: vertical; min-height: 110px; }
+.eb-form-group select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A7A72' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.eb-form-submit { width: 100%; margin-top: 8px; font-size: .95rem; justify-content: center; }
+.eb-form-ok { display: none; text-align: center; padding: 20px; background: var(--gl); border-radius: 12px; margin-top: 16px; }
+.eb-form-ok p { color: var(--g); font-weight: 500; margin: 0; }
+
+/* ── CTA FINAL ────────────────────────────────────────────── */
+#eb-cta-final { padding: 100px 0; background: var(--g); text-align: center; position: relative; overflow: hidden; }
+.eb-cta-final-deco { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+                      width: 600px; height: 600px; background: radial-gradient(circle, rgba(122,158,126,.15) 0%, transparent 60%);
+                      border-radius: 50%; pointer-events: none; }
+#eb-cta-final h2 { color: var(--wh); margin-bottom: 16px; position: relative; }
+#eb-cta-final h2 em { color: var(--go); }
+#eb-cta-final p { color: rgba(255,255,255,.7); font-size: 1.05rem; max-width: 500px; margin: 0 auto 36px; position: relative; }
+.eb-cta-final-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; position: relative; }
+.eb-cta-final-btns .eb-btn-gold { box-shadow: 0 8px 32px rgba(200,169,122,.3); }
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+#eb-footer { background: #1a2318; padding: 64px 0 32px; }
+.eb-footer-inner { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.eb-footer-brand .eb-logo-name { color: var(--wh); }
+.eb-footer-brand .eb-logo-tag  { color: rgba(122,158,126,.8); }
+.eb-footer-tagline { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.7; margin: 16px 0 24px; }
+.eb-footer-social { display: flex; gap: 10px; }
+.eb-footer-social a { width: 38px; height: 38px; border-radius: 50%; border: 1px solid rgba(255,255,255,.15);
+                       display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.6);
+                       font-size: .9rem; transition: all .25s; text-decoration: none; }
+.eb-footer-social a:hover { border-color: var(--gm); color: var(--wh); background: rgba(122,158,126,.15); }
+.eb-footer-col h4 { font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 600;
+                    letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.4);
+                    margin-bottom: 16px; }
+.eb-footer-col a { display: block; font-size: .88rem; color: rgba(255,255,255,.6); margin-bottom: 10px;
+                    transition: color .2s; }
+.eb-footer-col a:hover { color: var(--wh); }
+.eb-footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 28px;
+                     display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 16px; }
+.eb-footer-copy { font-size: .82rem; color: rgba(255,255,255,.35); }
+.eb-footer-legal { display: flex; gap: 20px; }
+.eb-footer-legal a { font-size: .82rem; color: rgba(255,255,255,.35); transition: color .2s; }
+.eb-footer-legal a:hover { color: rgba(255,255,255,.7); }
+
+/* ── WHATSAPP FLOTANTE ────────────────────────────────────── */
+#eb-wa-btn { position: fixed; bottom: 28px; right: 28px; z-index: 997;
+              display: flex; align-items: center; gap: 10px; background: #25D366; color: var(--wh);
+              padding: 13px 20px 13px 14px; border-radius: 50px;
+              box-shadow: 0 8px 32px rgba(37,211,102,.35); font-size: .88rem; font-weight: 600;
+              transition: all .3s; text-decoration: none; border: none; cursor: pointer; }
+#eb-wa-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 14px 40px rgba(37,211,102,.4); }
+#eb-wa-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .eb-quien-grid { grid-template-columns: repeat(2, 1fr); }
+  .eb-esp-grid { grid-template-columns: repeat(2, 1fr); }
+  .eb-footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  .eb-wrap h1 { font-size: 2.2rem; }
+  .eb-wrap h2 { font-size: 1.8rem; }
+  .eb-section { padding: 64px 0; }
+  #eb-hero { padding-top: 88px; }
+  .eb-hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .eb-hero-img-wrap { order: -1; max-width: 340px; margin: 0 auto; }
+  .eb-hero-img-badge { left: -10px; }
+  .eb-hero-img-badge2 { right: -10px; }
+  .eb-sobre-inner { grid-template-columns: 1fr; gap: 40px; }
+  .eb-sobre-img { max-width: 320px; margin: 0 auto; }
+  .eb-quien-grid { grid-template-columns: 1fr 1fr; }
+  .eb-esp-grid { grid-template-columns: 1fr; }
+  .eb-servicios-grid { grid-template-columns: 1fr; }
+  .eb-proceso-inner { grid-template-columns: 1fr; gap: 48px; }
+  .eb-tarifas-grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  .eb-faq-inner { grid-template-columns: 1fr; gap: 40px; }
+  .eb-ubicacion-inner { grid-template-columns: 1fr; }
+  .eb-contacto-inner { grid-template-columns: 1fr; gap: 40px; }
+  .eb-form { padding: 32px 24px; }
+  .eb-form-row { grid-template-columns: 1fr; }
+  .eb-review-card { flex: 0 0 calc(100% - 0px); margin-right: 20px; }
+  .eb-footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .eb-footer-bottom { flex-direction: column; text-align: center; }
+  .eb-nav { display: none; }
+  .eb-hamburger { display: flex; }
+  .eb-sobre-valores { grid-template-columns: 1fr; }
+  .eb-pilares { grid-template-columns: 1fr; }
+  .eb-esp-header { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .eb-container { padding: 0 18px; }
+  .eb-quien-grid { grid-template-columns: 1fr; }
+  .eb-hero-ctas { flex-direction: column; }
+  .eb-hero-ctas .eb-btn { width: 100%; justify-content: center; }
+  .eb-cta-final-btns { flex-direction: column; align-items: center; }
+  #eb-wa-btn span { display: none; }
+  #eb-wa-btn { padding: 14px; border-radius: 50%; }
+}
+
+
+/* ============================================================
+   REDISEÑO VISUAL PERSONALIZADO
+   Mantiene estructura, textos, enlaces y SEO. Cambia apariencia,
+   profundidad visual, hovers, microinteracciones e iconos.
+   ============================================================ */
+.eb-wrap {
+  --g: #243225;
+  --gm: #6F9874;
+  --gl: #EDF5EE;
+  --cr: #F7F1E8;
+  --go: #BE9760;
+  --wh: #FFFFFF;
+  --tx: #171B16;
+  --txm: #50564B;
+  --txl: #818779;
+  --bd: rgba(36,50,37,.13);
+  --soft: 0 18px 50px rgba(36,50,37,.10);
+  --deep: 0 28px 90px rgba(36,50,37,.18);
+  background:
+    radial-gradient(circle at 8% 6%, rgba(111,152,116,.08), transparent 28%),
+    radial-gradient(circle at 92% 18%, rgba(190,151,96,.08), transparent 30%),
+    var(--wh);
+}
+.eb-container { max-width: 1188px; }
+.eb-section { position: relative; padding: 104px 0; }
+.eb-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.38), transparent 22%, transparent 78%, rgba(255,255,255,.24));
+  opacity: .55;
+}
+.eb-section > .eb-container { position: relative; z-index: 1; }
+.eb-section-cream, #eb-quien, #eb-servicios, #eb-tarifas, #eb-contacto {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.5), rgba(255,255,255,0) 34%),
+    radial-gradient(circle at 100% 0%, rgba(111,152,116,.12), transparent 34%),
+    var(--cr);
+}
+.eb-section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(111,152,116,.10);
+  border: 1px solid rgba(111,152,116,.18);
+  border-radius: 999px;
+  padding: 7px 13px;
+  color: var(--g);
+  margin-bottom: 18px;
+}
+.eb-section-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--go);
+  box-shadow: 0 0 0 5px rgba(190,151,96,.12);
+}
+.eb-divider {
+  width: 74px;
+  height: 8px;
+  background: linear-gradient(90deg, var(--go), rgba(111,152,116,.45));
+  border-radius: 999px;
+  margin: 18px 0 42px;
+}
+.eb-wrap h1, .eb-wrap h2, .eb-wrap h3 { letter-spacing: -.018em; }
+.eb-wrap p { color: var(--txm); }
+
+.eb-btn {
+  position: relative;
+  overflow: hidden;
+  border-radius: 18px;
+  padding: 15px 30px;
+  transform: translateZ(0);
+  box-shadow: none;
+}
+.eb-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.28) 45%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .55s ease;
+}
+.eb-btn:hover::before { transform: translateX(120%); }
+.eb-btn-primary, .eb-nav-cta {
+  background: linear-gradient(135deg, var(--g), #3F5B43) !important;
+  color: var(--wh) !important;
+}
+.eb-btn-primary:hover, .eb-nav-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(36,50,37,.25) !important;
+}
+.eb-btn-secondary {
+  background: rgba(255,255,255,.6);
+  border-color: rgba(36,50,37,.26);
+  color: var(--g);
+}
+.eb-btn-secondary:hover {
+  background: var(--wh);
+  border-color: rgba(111,152,116,.55);
+  box-shadow: var(--soft);
+}
+.eb-btn-gold {
+  background: linear-gradient(135deg, var(--go), #D5B77E);
+}
+.eb-btn-gold:hover { box-shadow: 0 16px 40px rgba(190,151,96,.34); }
+
+.eb-fade {
+  opacity: 0;
+  transform: translateY(34px) scale(.985);
+  filter: blur(8px);
+  transition: opacity .82s ease, transform .82s cubic-bezier(.18,.82,.22,1), filter .82s ease;
+}
+.eb-fade.eb-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .eb-fade, .eb-btn, .eb-quien-card, .eb-esp-card, .eb-servicio-card, .eb-tarifa-card, .eb-loc-card, .eb-contact-method { transition: none !important; }
+  .eb-hero-badge-dot { animation: none !important; }
+}
+
+#eb-header {
+  top: 14px;
+  left: 16px;
+  right: 16px;
+  width: auto;
+  padding: 0;
+}
+#eb-header .eb-container { padding: 0; }
+.eb-header-inner {
+  background: rgba(255,255,255,.68);
+  border: 1px solid rgba(36,50,37,.10);
+  border-radius: 26px;
+  padding: 12px 16px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 50px rgba(36,50,37,.08);
+}
+#eb-header.eb-scrolled {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+#eb-header.eb-scrolled .eb-header-inner {
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 16px 50px rgba(36,50,37,.12);
+}
+.eb-nav a {
+  border-radius: 14px;
+  padding: 9px 13px;
+}
+.eb-nav a:not(.eb-nav-cta)::after {
+  content: '';
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  bottom: 5px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--go);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.eb-nav a:hover { background: rgba(237,245,238,.8); }
+.eb-nav a:hover::after { transform: scaleX(1); }
+
+#eb-hero {
+  background:
+    linear-gradient(135deg, rgba(247,241,232,.95), rgba(237,245,238,.72)),
+    radial-gradient(circle at 68% 18%, rgba(111,152,116,.20), transparent 32%);
+  padding-top: 132px;
+}
+#eb-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 110px;
+  background: linear-gradient(180deg, transparent, rgba(255,255,255,.88));
+  pointer-events: none;
+}
+.eb-hero-inner { gap: 76px; }
+.eb-hero-badge {
+  border-radius: 18px;
+  padding: 8px 18px 8px 10px;
+  background: rgba(255,255,255,.72);
+  backdrop-filter: blur(12px);
+}
+.eb-hero-title em, .eb-section-title em { color: var(--go); }
+.eb-hero-img-frame {
+  border-radius: 34px 140px 34px 140px;
+  transform: rotate(1.2deg);
+  box-shadow: var(--deep);
+  border: 10px solid rgba(255,255,255,.68);
+}
+.eb-hero-img-frame img { transform: scale(1.015); }
+.eb-hero-img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 28px -16px -24px 32px;
+  border: 1px solid rgba(190,151,96,.45);
+  border-radius: 140px 34px 140px 34px;
+  z-index: -1;
+}
+.eb-hero-img-badge, .eb-hero-img-badge2 {
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+}
+.eb-hero-img-badge { transform: rotate(-2.5deg); }
+.eb-hero-img-badge2 { transform: rotate(2deg); }
+.eb-hero-trust {
+  border-top: 0;
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255,255,255,.52);
+  border: 1px solid rgba(36,50,37,.08);
+}
+.eb-hero-trust-icon {
+  border-radius: 14px;
+  background: var(--wh);
+  box-shadow: 0 8px 24px rgba(36,50,37,.08);
+}
+
+.eb-sobre-img-frame {
+  border-radius: 120px 28px 120px 28px;
+  box-shadow: var(--deep);
+}
+.eb-sobre-img-deco {
+  border-radius: 28px 96px 28px 96px;
+  background: linear-gradient(135deg, rgba(111,152,116,.18), rgba(190,151,96,.16));
+}
+.eb-badge {
+  background: rgba(255,255,255,.70);
+  border-color: rgba(111,152,116,.22);
+  border-radius: 14px;
+}
+.eb-valor-item {
+  background: rgba(247,241,232,.56);
+  border: 1px solid rgba(36,50,37,.08);
+  border-radius: 20px;
+  padding: 14px;
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.eb-valor-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--soft);
+  background: var(--wh);
+}
+.eb-valor-icon { border-radius: 15px; }
+
+.eb-quien-grid, .eb-esp-grid, .eb-servicios-grid, .eb-tarifas-grid { gap: 26px; }
+.eb-quien-card, .eb-esp-card, .eb-servicio-card, .eb-tarifa-card, .eb-loc-card, .eb-form {
+  border: 1px solid rgba(36,50,37,.10);
+  box-shadow: 0 10px 30px rgba(36,50,37,.04);
+}
+.eb-quien-card {
+  border-radius: 30px 14px 30px 14px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(10px);
+}
+.eb-quien-card:nth-child(even) { border-radius: 14px 30px 14px 30px; }
+.eb-quien-card::before {
+  background: linear-gradient(135deg, rgba(237,245,238,.95), rgba(255,255,255,.5));
+}
+.eb-quien-card:hover {
+  transform: translateY(-9px) rotate(-.35deg);
+  box-shadow: var(--soft);
+}
+.eb-quien-card:nth-child(even):hover { transform: translateY(-9px) rotate(.35deg); }
+.eb-quien-icon, .eb-esp-icon, .eb-servicio-icon-wrap, .eb-pilar-icon, .eb-loc-icon {
+  transition: transform .3s cubic-bezier(.18,.82,.22,1);
+}
+.eb-quien-card:hover .eb-quien-icon,
+.eb-esp-card:hover .eb-esp-icon,
+.eb-servicio-card:hover .eb-servicio-icon-wrap,
+.eb-pilar:hover .eb-pilar-icon,
+.eb-loc-card:hover .eb-loc-icon {
+  transform: translateY(-3px) scale(1.08) rotate(-3deg);
+}
+
+.eb-esp-card {
+  border-radius: 16px 34px 16px 34px;
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.68));
+}
+.eb-esp-card:nth-child(2n) { border-radius: 34px 16px 34px 16px; }
+.eb-esp-card::after {
+  height: 100%;
+  width: 4px;
+  right: auto;
+  background: linear-gradient(180deg, var(--go), var(--gm));
+  transform: scaleY(0);
+  transform-origin: top;
+}
+.eb-esp-card:hover::after { transform: scaleY(1); }
+.eb-esp-card:hover {
+  transform: translateY(-7px);
+  box-shadow: var(--soft);
+}
+.eb-esp-num { color: rgba(36,50,37,.10); }
+
+.eb-servicio-card {
+  border-radius: 34px;
+  position: relative;
+  overflow: hidden;
+}
+.eb-servicio-card::before {
+  content: '';
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  right: -74px;
+  top: -74px;
+  background: radial-gradient(circle, rgba(111,152,116,.18), transparent 68%);
+  transition: transform .35s ease;
+}
+.eb-servicio-card:hover::before { transform: scale(1.35); }
+.eb-servicio-card > * { position: relative; z-index: 1; }
+.eb-servicio-card.eb-featured {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(190,151,96,.26), transparent 36%),
+    linear-gradient(135deg, #203023, #3B563F);
+}
+.eb-servicio-icon-wrap { border-radius: 22px; }
+
+.eb-step-num {
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--g), var(--gm));
+  box-shadow: 0 12px 28px rgba(36,50,37,.18);
+}
+.eb-step-connector {
+  background: linear-gradient(180deg, rgba(111,152,116,.42), rgba(36,50,37,.08));
+}
+.eb-pilar {
+  border-radius: 22px;
+  background: rgba(247,241,232,.74);
+  border: 1px solid rgba(36,50,37,.08);
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.eb-pilar:hover {
+  transform: translateY(-5px);
+  background: var(--wh);
+  box-shadow: var(--soft);
+}
+.eb-quote-block {
+  border-radius: 34px 16px 34px 16px;
+  background:
+    radial-gradient(circle at 92% 10%, rgba(190,151,96,.20), transparent 32%),
+    linear-gradient(135deg, #223224, #3D5740);
+  box-shadow: var(--deep);
+}
+
+.eb-tarifa-card {
+  border-radius: 32px;
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(10px);
+}
+.eb-tarifa-card.eb-pop {
+  transform: translateY(-10px);
+  border-color: rgba(111,152,116,.55);
+  box-shadow: 0 26px 68px rgba(36,50,37,.14);
+}
+.eb-tarifa-card:hover { transform: translateY(-9px); }
+.eb-tarifa-card.eb-pop:hover { transform: translateY(-14px); }
+.eb-tarifa-badge { border-radius: 14px; }
+.eb-tarifa-eur { color: var(--g); }
+
+.eb-faq-item {
+  border-radius: 20px;
+  background: rgba(255,255,255,.72);
+}
+.eb-faq-q { padding: 22px 24px; }
+.eb-faq-item.eb-open {
+  box-shadow: var(--soft);
+  background: var(--wh);
+}
+
+#eb-testimonios {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(190,151,96,.22), transparent 30%),
+    radial-gradient(circle at 100% 20%, rgba(111,152,116,.22), transparent 30%),
+    linear-gradient(135deg, #1E2C21, #324936);
+}
+.eb-review-card {
+  border-radius: 28px 12px 28px 12px;
+  background: rgba(255,255,255,.075);
+  transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+.eb-review-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255,255,255,.105);
+  border-color: rgba(255,255,255,.22);
+}
+.eb-slider-btn {
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+.eb-slider-btn:hover { transform: translateY(-2px); }
+
+.eb-loc-card {
+  border-radius: 28px 14px 28px 14px;
+  background: rgba(255,255,255,.78);
+}
+.eb-loc-card:nth-child(even) { border-radius: 14px 28px 14px 28px; }
+.eb-loc-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--soft);
+}
+.eb-loc-map-wrap {
+  border-radius: 34px;
+  box-shadow: var(--soft);
+  border: 10px solid rgba(255,255,255,.72);
+}
+.eb-loc-map-wrap iframe { border-radius: 24px !important; }
+
+#eb-contacto {
+  background:
+    radial-gradient(circle at 14% 10%, rgba(111,152,116,.16), transparent 30%),
+    linear-gradient(135deg, var(--cr), #FAF7F0 55%, #EDF5EE);
+}
+.eb-contact-method {
+  border-radius: 24px;
+  background: rgba(255,255,255,.74);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+.eb-contact-method::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--go), var(--gm));
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .25s ease;
+}
+.eb-contact-method:hover::before { transform: scaleY(1); }
+.eb-contact-method:hover {
+  border-color: rgba(111,152,116,.46);
+  box-shadow: var(--soft);
+  transform: translateX(8px) translateY(-2px);
+}
+.eb-contact-method-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 18px;
+  background: var(--wh);
+  box-shadow: 0 12px 24px rgba(36,50,37,.08);
+}
+.eb-contact-method:hover .eb-contact-method-icon { transform: scale(1.06) rotate(-2deg); }
+.eb-contact-method-arrow { transition: transform .25s ease, color .25s ease; }
+.eb-contact-method:hover .eb-contact-method-arrow { transform: translateX(4px); color: var(--g); }
+.eb-icon-svg { width: 24px; height: 24px; display: block; }
+.eb-icon-svg.eb-icon-whatsapp { color: #25D366; }
+.eb-icon-svg.eb-icon-gmail { width: 26px; height: 26px; }
+.eb-icon-svg.eb-icon-calendar { color: var(--go); }
+.eb-form {
+  border-radius: 38px 18px 38px 18px;
+  background: rgba(255,255,255,.82);
+  backdrop-filter: blur(12px);
+  box-shadow: var(--deep);
+}
+.eb-form-group input,
+.eb-form-group select,
+.eb-form-group textarea {
+  border-radius: 16px;
+  background: rgba(255,255,255,.86);
+}
+.eb-form-group input:hover,
+.eb-form-group select:hover,
+.eb-form-group textarea:hover { border-color: rgba(111,152,116,.34); }
+
+#eb-cta-final {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(190,151,96,.22), transparent 30%),
+    radial-gradient(circle at 12% 80%, rgba(111,152,116,.20), transparent 28%),
+    linear-gradient(135deg, #1F2E22, #3D573F);
+}
+#eb-footer {
+  background:
+    linear-gradient(135deg, #141D14, #243522);
+}
+.eb-footer-social a {
+  border-radius: 14px;
+}
+.eb-footer-social a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px rgba(0,0,0,.18);
+}
+#eb-wa-btn {
+  border-radius: 18px;
+  background: linear-gradient(135deg, #25D366, #16A34A);
+}
+#eb-wa-btn:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.eb-card-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.eb-card-tilt:hover { z-index: 2; }
+
+@media (max-width: 768px) {
+  #eb-header { top: 10px; left: 10px; right: 10px; }
+  .eb-header-inner { border-radius: 22px; }
+  #eb-hero { padding-top: 118px; }
+  .eb-section { padding: 76px 0; }
+  .eb-hero-img-frame, .eb-sobre-img-frame { border-radius: 28px 82px 28px 82px; }
+  .eb-tarifa-card.eb-pop { transform: none; }
+  .eb-contact-method:hover { transform: translateY(-3px); }
+}
+
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HTML STRUCTURE
+═══════════════════════════════════════════════════════════ -->
+<div class="eb-wrap" id="eb-wrap">
+
+<!-- ── OVERLAY MÓVIL ────────────────────────────────────────── -->
+<div class="eb-overlay" id="eb-overlay" onclick="ebCloseMenu()"></div>
+
+<!-- ── HEADER ───────────────────────────────────────────────── -->
+<header id="eb-header">
+  <div class="eb-container">
+    <div class="eb-header-inner">
+      <!-- LOGO -->
+      <a href="#eb-hero" class="eb-logo" onclick="ebSmoothScroll(event,'#eb-hero')">
+        <svg class="eb-logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="18" r="17" stroke="#2D3B2E" stroke-width="1.5"/>
+          <path d="M18 8C13.5 8 10 12 10 17C10 21.5 13 24.5 16 25.5V28H20V25.5C23 24.5 26 21.5 26 17C26 12 22.5 8 18 8Z" fill="#7A9E7E" opacity=".3"/>
+          <path d="M18 10C14.7 10 12 13.1 12 17C12 20.4 14.2 23 17 23.8V27H19V23.8C21.8 23 24 20.4 24 17C24 13.1 21.3 10 18 10Z" fill="#2D3B2E"/>
+          <circle cx="18" cy="17" r="4" fill="#C8A97A"/>
+        </svg>
+        <span class="eb-logo-text">
+          <span class="eb-logo-name">Elsa Buendía</span>
+          <span class="eb-logo-tag">Dietista · Nutricionista</span>
+        </span>
+      </a>
+      <!-- NAV DESKTOP -->
+      <nav class="eb-nav">
+        <a href="#eb-sobre"        onclick="ebSmoothScroll(event,'#eb-sobre')">Sobre mí</a>
+        <a href="#eb-especialidades" onclick="ebSmoothScroll(event,'#eb-especialidades')">Especialidades</a>
+        <a href="#eb-servicios"    onclick="ebSmoothScroll(event,'#eb-servicios')">Servicios</a>
+        <a href="#eb-tarifas"      onclick="ebSmoothScroll(event,'#eb-tarifas')">Tarifas</a>
+        <a href="#eb-testimonios"  onclick="ebSmoothScroll(event,'#eb-testimonios')">Reseñas</a>
+        <a href="#eb-contacto"     onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-nav-cta">Pedir cita</a>
+      </nav>
+      <!-- HAMBURGER MÓVIL -->
+      <button class="eb-hamburger" id="eb-hamburger" onclick="ebToggleMenu()" aria-label="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MENÚ MÓVIL -->
+<nav class="eb-mobile-nav" id="eb-mobile-nav">
+  <a href="#eb-sobre"           onclick="ebSmoothScroll(event,'#eb-sobre');ebCloseMenu()">Sobre mí</a>
+  <a href="#eb-quien"           onclick="ebSmoothScroll(event,'#eb-quien');ebCloseMenu()">¿A quién acompaño?</a>
+  <a href="#eb-especialidades"  onclick="ebSmoothScroll(event,'#eb-especialidades');ebCloseMenu()">Especialidades</a>
+  <a href="#eb-servicios"       onclick="ebSmoothScroll(event,'#eb-servicios');ebCloseMenu()">Servicios</a>
+  <a href="#eb-tarifas"         onclick="ebSmoothScroll(event,'#eb-tarifas');ebCloseMenu()">Tarifas</a>
+  <a href="#eb-testimonios"     onclick="ebSmoothScroll(event,'#eb-testimonios');ebCloseMenu()">Reseñas</a>
+  <a href="#eb-ubicacion"       onclick="ebSmoothScroll(event,'#eb-ubicacion');ebCloseMenu()">Ubicación</a>
+  <a href="#eb-contacto"        onclick="ebSmoothScroll(event,'#eb-contacto');ebCloseMenu()" class="eb-nav-cta">Pedir cita →</a>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section id="eb-hero">
+  <div class="eb-hero-bg-deco"></div>
+  <div class="eb-hero-bg-deco2"></div>
+  <div class="eb-container">
+    <div class="eb-hero-inner">
+      <div class="eb-hero-content">
+        <div class="eb-hero-badge">
+          <span class="eb-hero-badge-dot"></span>
+          Colegiada CV01793 · Consulta presencial y online
+        </div>
+        <h1 class="eb-hero-title">
+          Nutrición que se<br>
+          adapta a <em>tu vida real</em>
+        </h1>
+        <p class="eb-hero-sub">
+          Aquí no hay fórmulas mágicas ni restricciones imposibles.<br>
+          Te acompaño con una nutrición personalizada, basada en evidencia y alejada de la cultura de la dieta.
+        </p>
+        <div class="eb-hero-ctas">
+          <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" class="eb-btn eb-btn-primary">
+            Pedir cita →
+          </a>
+          <a href="#eb-sobre" onclick="ebSmoothScroll(event,'#eb-sobre')" class="eb-btn eb-btn-secondary">
+            Conoce cómo trabajo
+          </a>
+        </div>
+        <div class="eb-hero-trust">
+          <div class="eb-hero-trust-item">
+            <div class="eb-hero-trust-icon">🎓</div>
+            <span>Dietista colegiada</span>
+          </div>
+          <div class="eb-hero-trust-item">
+            <div class="eb-hero-trust-icon">🌿</div>
+            <span>Sin cultura de la dieta</span>
+          </div>
+          <div class="eb-hero-trust-item">
+            <div class="eb-hero-trust-icon">🌐</div>
+            <span>Consulta online</span>
+          </div>
+        </div>
+      </div>
+      <div class="eb-hero-img-wrap eb-fade">
+        <div class="eb-hero-img-deco"></div>
+        <div class="eb-hero-img-frame">
+          <img src="https://elsabuendianutricion.com/wp-content/uploads/2026/05/WhatsApp-Image-2026-05-20-at-14.31.39-e1779280843313.jpeg"
+               alt="Elsa Buendía, dietista-nutricionista colegiada en L'Eliana y online"
+               loading="eager">
+        </div>
+        <div class="eb-hero-img-badge">
+          <div class="eb-hero-img-badge-num">+5</div>
+          <div class="eb-hero-img-badge-txt">años acompañando pacientes</div>
+        </div>
+        <div class="eb-hero-img-badge2">
+          <span>100%</span>
+          Basado en evidencia científica
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SOBRE MÍ ───────────────────────────────────────────────── -->
+<section id="eb-sobre" class="eb-section">
+  <div class="eb-container">
+    <div class="eb-sobre-inner">
+      <div class="eb-sobre-img eb-fade">
+        <div class="eb-sobre-img-deco"></div>
+        <div class="eb-sobre-img-frame">
+          <img src="https://elsabuendianutricion.com/wp-content/uploads/2026/05/WhatsApp-Image-2026-05-20-at-14.31.39-e1779280843313.jpeg"
+               alt="Elsa Buendía en consulta de nutrición"
+               loading="lazy">
+        </div>
+      </div>
+      <div class="eb-sobre-text eb-fade eb-fade-delay-2">
+        <span class="eb-section-label">Sobre mí</span>
+        <h2 class="eb-section-title">Soy Elsa Buendía,<br><em>dietista-nutricionista</em></h2>
+        <div class="eb-divider"></div>
+        <div class="eb-sobre-badges">
+          <span class="eb-badge">✦ Colegiada CV01793</span>
+          <span class="eb-badge">🌸 Salud hormonal femenina</span>
+          <span class="eb-badge">👶 Alimentación materno-infantil</span>
+          <span class="eb-badge">🌍 Cooperación al desarrollo</span>
+        </div>
+        <p>Soy dietista-nutricionista colegiada, especializada en nutrición clínica, alimentación materno-infantil y salud hormonal femenina.</p>
+        <p style="margin-top:12px">Desde el inicio de mi trayectoria, mi interés ha estado muy ligado a la salud de la mujer, la lactancia materna y la infancia. Cuento además con formación en cooperación al desarrollo, lo que refleja mi compromiso con una visión de la salud más global, social y humana.</p>
+        <p style="margin-top:12px">Trabajo desde un enfoque integral, respetuoso y basado en la evidencia científica, alejándome de la cultura de la dieta. Mi objetivo es ayudarte a construir una alimentación sostenible en el tiempo, sin culpa ni soluciones milagro.</p>
+        <div class="eb-sobre-valores">
+          <div class="eb-valor-item">
+            <div class="eb-valor-icon">🔬</div>
+            <div><div class="eb-valor-text">Evidencia científica</div><div class="eb-valor-sub">Sin mitos ni modas</div></div>
+          </div>
+          <div class="eb-valor-item">
+            <div class="eb-valor-icon">💚</div>
+            <div><div class="eb-valor-text">Sin cultura de la dieta</div><div class="eb-valor-sub">Alimentación sin culpa</div></div>
+          </div>
+          <div class="eb-valor-item">
+            <div class="eb-valor-icon">🤝</div>
+            <div><div class="eb-valor-text">Trato personalizado</div><div class="eb-valor-sub">Tu historia importa</div></div>
+          </div>
+          <div class="eb-valor-item">
+            <div class="eb-valor-icon">🌍</div>
+            <div><div class="eb-valor-text">Visión global</div><div class="eb-valor-sub">Salud social y humana</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── A QUIÉN ACOMPAÑO ──────────────────────────────────────── -->
+<section id="eb-quien" class="eb-section">
+  <div class="eb-container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 56px">
+      <span class="eb-section-label">Mi consulta</span>
+      <h2 class="eb-section-title eb-fade">¿A quién <em>acompaño?</em></h2>
+      <div class="eb-divider" style="margin:16px auto 20px"></div>
+      <p class="eb-section-sub eb-fade eb-fade-delay-1" style="margin:0">Trabajo con personas que quieren mejorar su relación con la alimentación desde un enfoque real y sin presiones.</p>
+    </div>
+    <div class="eb-quien-grid">
+      <div class="eb-quien-card eb-fade eb-fade-delay-1">
+        <span class="eb-quien-icon">🌿</span>
+        <h3>Personas adultas</h3>
+        <p>Que buscan un cambio en su alimentación o mejorar su salud desde un enfoque integral y personalizado.</p>
+      </div>
+      <div class="eb-quien-card eb-fade eb-fade-delay-2">
+        <span class="eb-quien-icon">👶</span>
+        <h3>Familias e infancia</h3>
+        <p>Familias de niños y niñas que necesitan una consulta de nutrición adaptada a su etapa de desarrollo.</p>
+      </div>
+      <div class="eb-quien-card eb-fade eb-fade-delay-3">
+        <span class="eb-quien-icon">🌸</span>
+        <h3>Mujeres</h3>
+        <p>En sus diferentes etapas vitales: adolescencia, fertilidad, embarazo, lactancia y menopausia.</p>
+      </div>
+      <div class="eb-quien-card eb-fade eb-fade-delay-4">
+        <span class="eb-quien-icon">🤱</span>
+        <h3>Madres y bebés</h3>
+        <p>Acompañamiento en la etapa de lactancia y alimentación complementaria del bebé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ESPECIALIDADES ────────────────────────────────────────── -->
+<section id="eb-especialidades" class="eb-section">
+  <div class="eb-container">
+    <div class="eb-esp-header">
+      <div>
+        <span class="eb-section-label">Especialidades</span>
+        <h2 class="eb-section-title eb-fade">¿En qué te puedo <em>ayudar?</em></h2>
+        <div class="eb-divider"></div>
+      </div>
+      <p class="eb-fade eb-fade-delay-1" style="max-width:340px;font-size:.95rem">Cada proceso es único. Trabajo con múltiples áreas de la nutrición para acompañarte en lo que realmente necesitas.</p>
+    </div>
+    <div class="eb-esp-grid">
+      <div class="eb-esp-card eb-fade eb-fade-delay-1">
+        <div class="eb-esp-num">01</div>
+        <div class="eb-esp-icon">🌸</div>
+        <h3>Alimentación de la mujer</h3>
+        <p>Menopausia, embarazo y lactancia. Acompañamiento nutricional en cada etapa vital de la mujer.</p>
+      </div>
+      <div class="eb-esp-card eb-fade eb-fade-delay-2">
+        <div class="eb-esp-num">02</div>
+        <div class="eb-esp-icon">⚡</div>
+        <h3>Salud hormonal femenina</h3>
+        <p>Endometriosis, amenorrea hipotalámica, síndrome de ovario poliquístico (SOP) y más.</p>
+      </div>
+      <div class="eb-esp-card eb-fade eb-fade-delay-3">
+        <div class="eb-esp-num">03</div>
+        <div class="eb-esp-icon">🍼</div>
+        <h3>Alimentación infantil</h3>
+        <p>Nutrición adaptada a cada etapa del desarrollo. Desde la alimentación complementaria hasta la infancia.</p>
+      </div>
+      <div class="eb-esp-card eb-fade eb-fade-delay-1">
+        <div class="eb-esp-num">04</div>
+        <div class="eb-esp-icon">🫁</div>
+        <h3>Problemas digestivos</h3>
+        <p>Alergias e intolerancias, SIBO, Helicobacter pylori, celiaquía y enfermedad inflamatoria intestinal.</p>
+      </div>
+      <div class="eb-esp-card eb-fade eb-fade-delay-2">
+        <div class="eb-esp-num">05</div>
+        <div class="eb-esp-icon">📚</div>
+        <h3>Educación nutricional</h3>
+        <p>Aprende a comer sano y mejora tu relación con la comida. Sin prohibiciones ni culpa.</p>
+      </div>
+      <div class="eb-esp-card eb-fade eb-fade-delay-3">
+        <div class="eb-esp-num">06</div>
+        <div class="eb-esp-icon">🥦</div>
+        <h3>Alimentación vegetal</h3>
+        <p>Dietas vegetarianas y veganas de forma segura, equilibrada y nutritivamente completa.</p>
+      </div>
+    </div>
+    <div class="eb-esp-cta-wrap eb-fade">
+      <p class="eb-esp-cta-text">¿No encuentras tu caso? Escríbeme y hablamos sin compromiso.</p>
+      <a href="#eb-contacto" onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-btn eb-btn-secondary">Escríbeme →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── SERVICIOS ─────────────────────────────────────────────── -->
+<section id="eb-servicios" class="eb-section eb-section-cream">
+  <div class="eb-container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 56px">
+      <span class="eb-section-label">Lo que ofrezco</span>
+      <h2 class="eb-section-title eb-fade">Mis <em>servicios</em></h2>
+      <div class="eb-divider" style="margin:16px auto 20px"></div>
+      <p class="eb-fade eb-fade-delay-1" style="margin:0">Más allá de la consulta individual, también ofrezco formación y materiales para llegar a más personas.</p>
+    </div>
+    <div class="eb-servicios-grid">
+      <div class="eb-servicio-card eb-featured eb-fade eb-fade-delay-1">
+        <div class="eb-servicio-icon-wrap">🥗</div>
+        <div class="eb-servicio-subtitle">Servicio principal</div>
+        <h3>Consultas de nutrición</h3>
+        <p>Acompañamiento nutricional personalizado, desde la primera consulta hasta el seguimiento continuo. Presencial en L'Eliana u online desde cualquier parte del mundo.</p>
+        <a href="#eb-tarifas" onclick="ebSmoothScroll(event,'#eb-tarifas')" class="eb-btn eb-btn-secondary">Ver tarifas →</a>
+      </div>
+      <div class="eb-servicio-card eb-fade eb-fade-delay-2">
+        <div class="eb-servicio-icon-wrap">🎤</div>
+        <div class="eb-servicio-subtitle">Para grupos y empresas</div>
+        <h3>Charlas, formaciones y talleres</h3>
+        <p>Sesiones formativas sobre alimentación saludable, salud hormonal, nutrición infantil y más. Para empresas, centros educativos y grupos.</p>
+        <a href="#eb-contacto" onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-btn eb-btn-secondary">Consultar →</a>
+      </div>
+      <div class="eb-servicio-card eb-fade eb-fade-delay-3">
+        <div class="eb-servicio-icon-wrap">📄</div>
+        <div class="eb-servicio-subtitle">Contenido educativo</div>
+        <h3>Material educativo</h3>
+        <p>Guías, materiales divulgativos y recursos sobre nutrición para pacientes, instituciones o proyectos. Contenido riguroso y accesible.</p>
+        <a href="#eb-contacto" onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-btn eb-btn-secondary">Contactar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CÓMO TRABAJO ──────────────────────────────────────────── -->
+<section id="eb-proceso" class="eb-section">
+  <div class="eb-container">
+    <div class="eb-proceso-inner">
+      <div>
+        <span class="eb-section-label">Cómo trabajo</span>
+        <h2 class="eb-section-title eb-fade">Un proceso pensado<br><em>para ti</em></h2>
+        <div class="eb-divider"></div>
+        <div class="eb-proceso-steps">
+          <div class="eb-step eb-fade eb-fade-delay-1">
+            <div class="eb-step-line">
+              <div class="eb-step-num">01</div>
+              <div class="eb-step-connector"></div>
+            </div>
+            <div class="eb-step-content">
+              <h3>Primera consulta</h3>
+              <p>La primera sesión dura 60 minutos. Es un espacio para conocernos y entender tu situación en profundidad.</p>
+            </div>
+          </div>
+          <div class="eb-step eb-fade eb-fade-delay-2">
+            <div class="eb-step-line">
+              <div class="eb-step-num">02</div>
+              <div class="eb-step-connector"></div>
+            </div>
+            <div class="eb-step-content">
+              <h3>Plan nutricional personalizado</h3>
+              <p>En máximo 4 días recibirás el plan adaptado a tus necesidades: pautas, materiales de apoyo, educación alimentaria e ideas de menú.</p>
+            </div>
+          </div>
+          <div class="eb-step eb-fade eb-fade-delay-3">
+            <div class="eb-step-line">
+              <div class="eb-step-num">03</div>
+              <div class="eb-step-connector"></div>
+            </div>
+            <div class="eb-step-content">
+              <h3>Consultas de seguimiento</h3>
+              <p>45 minutos para revisar progresos, resolver dudas y reajustar pautas. La primera revisión, 2 semanas después.</p>
+            </div>
+          </div>
+          <div class="eb-step eb-fade eb-fade-delay-4">
+            <div class="eb-step-line">
+              <div class="eb-step-num">04</div>
+            </div>
+            <div class="eb-step-content">
+              <h3>Acompañamiento continuo</h3>
+              <p>Durante el proceso estaremos en contacto para resolver dudas y darte apoyo en momentos clave.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="eb-pilares">
+          <div class="eb-pilar eb-fade eb-fade-delay-1">
+            <div class="eb-pilar-icon">🤝</div>
+            <h4>Acompañamiento cercano</h4>
+            <p>Libre de cultura de la dieta y sin juicios.</p>
+          </div>
+          <div class="eb-pilar eb-fade eb-fade-delay-2">
+            <div class="eb-pilar-icon">🌍</div>
+            <h4>Visión social</h4>
+            <p>Una mirada global y comprometida con la salud.</p>
+          </div>
+          <div class="eb-pilar eb-fade eb-fade-delay-3">
+            <div class="eb-pilar-icon">🎯</div>
+            <h4>Adaptación real</h4>
+            <p>A tu contexto, tu ritmo y tus objetivos.</p>
+          </div>
+          <div class="eb-pilar eb-fade eb-fade-delay-4">
+            <div class="eb-pilar-icon">🔬</div>
+            <h4>Evidencia científica</h4>
+            <p>Sin soluciones milagro ni restricciones innecesarias.</p>
+          </div>
+        </div>
+        <div class="eb-quote-block eb-fade">
+          <span class="eb-quote-mark">"</span>
+          <p>Las consultas están pensadas como un proceso de acompañamiento nutricional, no como una pauta aislada.</p>
+          <cite>— Elsa Buendía, dietista-nutricionista</cite>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TARIFAS ───────────────────────────────────────────────── -->
+<section id="eb-tarifas" class="eb-section eb-section-cream">
+  <div class="eb-container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 56px">
+      <span class="eb-section-label">Inversión</span>
+      <h2 class="eb-section-title eb-fade">Tarifas <em>transparentes</em></h2>
+      <div class="eb-divider" style="margin:16px auto 20px"></div>
+      <p class="eb-fade eb-fade-delay-1" style="margin:0">Consulta las tarifas y da el primer paso hacia una alimentación que te cuide de verdad.</p>
+    </div>
+    <div class="eb-tarifas-grid">
+      <div class="eb-tarifa-card eb-fade eb-fade-delay-1">
+        <span class="eb-tarifa-badge">Consulta inicial</span>
+        <h3>Primera consulta</h3>
+        <p class="eb-tarifa-desc">Primera sesión de 60 minutos + plan nutricional personalizado.</p>
+        <div class="eb-tarifa-price">
+          <span class="eb-tarifa-eur">XX</span>
+          <span class="eb-tarifa-suffix">€</span>
+        </div>
+        <p class="eb-tarifa-note">Plan entregado en 4 días laborables</p>
+        <ul class="eb-tarifa-features">
+          <li>Sesión de 60 minutos</li>
+          <li>Anamnesis nutricional completa</li>
+          <li>Plan nutricional personalizado</li>
+          <li>Materiales de apoyo</li>
+          <li>Ideas de menú adaptadas</li>
+        </ul>
+        <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" class="eb-btn eb-btn-primary" style="justify-content:center">Pedir cita →</a>
+      </div>
+      <div class="eb-tarifa-card eb-pop eb-fade eb-fade-delay-2">
+        <span class="eb-tarifa-badge">Seguimiento</span>
+        <h3>Consulta de seguimiento</h3>
+        <p class="eb-tarifa-desc">Revisión de progresos, resolución de dudas y reajuste de pautas.</p>
+        <div class="eb-tarifa-price">
+          <span class="eb-tarifa-eur">XX</span>
+          <span class="eb-tarifa-suffix">€</span>
+        </div>
+        <p class="eb-tarifa-note">Sesión de 45 minutos</p>
+        <ul class="eb-tarifa-features">
+          <li>Sesión de 45 minutos</li>
+          <li>Revisión de progresos</li>
+          <li>Reajuste de pautas</li>
+          <li>Resolución de dudas</li>
+          <li>Apoyo entre consultas</li>
+        </ul>
+        <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" class="eb-btn eb-btn-primary" style="justify-content:center">Reservar →</a>
+      </div>
+      <div class="eb-tarifa-card eb-fade eb-fade-delay-3">
+        <span class="eb-tarifa-badge">Embarazo</span>
+        <h3>Plan embarazo</h3>
+        <p class="eb-tarifa-desc">Acompañamiento integral durante la gestación. Incluye ebook exclusivo.</p>
+        <div class="eb-tarifa-price">
+          <span class="eb-tarifa-eur">XX</span>
+          <span class="eb-tarifa-suffix">€</span>
+        </div>
+        <p class="eb-tarifa-note">Consulta inicial + seguimiento + ebook</p>
+        <ul class="eb-tarifa-features">
+          <li>Consulta inicial completa</li>
+          <li>Primera consulta de seguimiento</li>
+          <li>Ebook de nutrición en el embarazo</li>
+          <li>Plan personalizado a la gestación</li>
+          <li>Soporte entre consultas</li>
+        </ul>
+        <a href="#eb-contacto" onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-btn eb-btn-secondary" style="justify-content:center">Consultar →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ───────────────────────────────────────────────────── -->
+<section id="eb-faq" class="eb-section">
+  <div class="eb-container">
+    <div class="eb-faq-inner">
+      <div class="eb-fade">
+        <span class="eb-section-label">FAQ</span>
+        <h2 class="eb-section-title">Preguntas <em>frecuentes</em></h2>
+        <div class="eb-divider"></div>
+        <p style="font-size:.95rem;color:var(--txm);line-height:1.75;margin-bottom:28px">Si tienes alguna duda que no aparece aquí, no lo dudes: escríbeme y te respondo encantada.</p>
+        <a href="#eb-contacto" onclick="ebSmoothScroll(event,'#eb-contacto')" class="eb-btn eb-btn-secondary">Hacer una pregunta →</a>
+      </div>
+      <div class="eb-faq-list eb-fade eb-fade-delay-2">
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿Qué puedo esperar de tus consultas?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">Acompañamiento cercano y empático, libre de cultura de la dieta, con visión social y humana de la salud. El trabajo se adapta a tu historia, tu contexto y tus objetivos, desde una mirada integral basada en evidencia científica.</div></div>
+        </div>
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿Cómo pido una cita?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">Puedes pedir cita a través del formulario de contacto de esta web, por WhatsApp o directamente desde el botón de reserva online (Calendly). Te responderé para confirmar el día y la hora que mejor te venga.</div></div>
+        </div>
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿En la primera consulta me darás un menú?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">No en la primera consulta. Esa sesión está dedicada a conocernos y entender tu situación en profundidad. El plan nutricional personalizado lo recibirás en un plazo máximo de 4 días laborables.</div></div>
+        </div>
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿Puedo ir con otra persona de mi unidad familiar?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">[Elsa, completa esta respuesta con tu criterio — por ejemplo si aceptas consultas conjuntas o si cada miembro de la familia necesita su propia cita individual.]</div></div>
+        </div>
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿Realizas pautas de suplementación?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">[Elsa, completa esta respuesta con tu criterio sobre suplementación.]</div></div>
+        </div>
+        <div class="eb-faq-item">
+          <div class="eb-faq-q" onclick="ebToggleFaq(this)">
+            ¿Cuál es la diferencia entre presencial y online?
+            <svg class="eb-faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="eb-faq-a"><div class="eb-faq-a-inner">Ninguna en cuanto a la calidad del acompañamiento. Las consultas online se realizan por videollamada y tienen exactamente el mismo formato, duración y seguimiento que las presenciales. La modalidad online permite trabajar desde cualquier parte del mundo.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIOS ───────────────────────────────────────────── -->
+<section id="eb-testimonios" class="eb-section">
+  <div class="eb-container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 48px">
+      <span class="eb-section-label">Reseñas</span>
+      <h2 class="eb-section-title eb-fade">Lo que dicen mis <em>pacientes</em></h2>
+      <div class="eb-divider" style="margin:16px auto 0"></div>
+    </div>
+    <div class="eb-slider-wrap eb-fade">
+      <div class="eb-slider-track" id="eb-slider-track">
+
+        <!-- RESEÑA 1 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=A" alt="Avatar Ana G." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Ana G.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Elsa me ha cambiado la relación con la comida completamente. Llevaba años a dieta sin resultados sostenibles y por primera vez siento que como bien sin restricciones. Su enfoque sin juicios es exactamente lo que necesitaba."</p>
+        </div>
+
+        <!-- RESEÑA 2 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=M" alt="Avatar María L." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">María L.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Vine por problemas digestivos que llevaban años sin diagnóstico claro. Elsa me escuchó con muchísima paciencia, me explicó todo y el plan que diseñó fue clave. Nunca me sentí juzgada. 100% recomendable."</p>
+        </div>
+
+        <!-- RESEÑA 3 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=S" alt="Avatar Sara P." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Sara P.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Empecé con Elsa durante el embarazo y ha sido una de las mejores decisiones. Me ayudó a comer de forma equilibrada sin obsesionarme. Sus explicaciones son muy claras y siempre está disponible para resolver dudas."</p>
+        </div>
+
+        <!-- RESEÑA 4 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=L" alt="Avatar Laura M." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Laura M.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Tenía SOP y no sabía cómo afecta a la alimentación. Elsa me explicó todo con mucha claridad y paciencia. El plan es muy práctico y adaptado a mi vida real. Ya noto la diferencia en cómo me siento."</p>
+        </div>
+
+        <!-- RESEÑA 5 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=C" alt="Avatar Carmen R." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Carmen R.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Llevo meses trabajando con Elsa y los resultados van mucho más allá de la alimentación. He aprendido a escuchar mi cuerpo y a entender qué necesito. Es una profesional increíble, cercana y muy preparada."</p>
+        </div>
+
+        <!-- RESEÑA 6 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=P" alt="Avatar Patricia V." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Patricia V.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"La consulta online es perfecta, igual de completa que en persona. Elsa me preparó un plan súper detallado y adaptado a mi celiaquía. Por fin entiendo qué comer y cómo organizarme. Muy recomendable."</p>
+        </div>
+
+        <!-- RESEÑA 7 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=I" alt="Avatar Isabel C." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Isabel C.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Vine con mi hija de 3 años por problemas con la alimentación complementaria y Elsa fue una guía increíble. Nos dio herramientas prácticas y mucha tranquilidad. Ahora las comidas son mucho más llevaderas."</p>
+        </div>
+
+        <!-- RESEÑA 8 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=N" alt="Avatar Nuria S." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Nuria S.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Después de años con amenorrea hipotalámica, Elsa fue la primera profesional que me habló del tema con conocimiento real. Su plan nutricional fue esencial en mi recuperación. No puedo recomendarla más."</p>
+        </div>
+
+        <!-- RESEÑA 9 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=R" alt="Avatar Rosa T." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Rosa T.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Soy vegana y encontrar una nutricionista que entienda esta forma de comer y la respete no es fácil. Elsa lo hizo de maravilla. El plan es completo, variado y sin ningún tipo de juicio. Muy feliz."</p>
+        </div>
+
+        <!-- RESEÑA 10 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=E" alt="Avatar Elena B." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Elena B.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Consulta online muy cómoda y completa. Elsa es muy profesional, explica todo con claridad y sus planes son realistas. Nada de restricciones extremas, todo adaptado a la vida real. La recomiendo totalmente."</p>
+        </div>
+
+        <!-- RESEÑA 11 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/EAF2EB/2D3B2E?text=V" alt="Avatar Valentina H." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Valentina H.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Empecé la lactancia con muchas dudas sobre mi alimentación y Elsa me acompañó con mucha paciencia. El plan fue clave para mantener la energía en esa etapa tan exigente. Gracias por todo."</p>
+        </div>
+
+        <!-- RESEÑA 12 -->
+        <div class="eb-review-card">
+          <div class="eb-review-top">
+            <div class="eb-review-avatar">
+              <img src="https://placehold.co/52x52/F5F0E8/2D3B2E?text=B" alt="Avatar Beatriz F." loading="lazy">
+            </div>
+            <div class="eb-review-meta">
+              <div class="eb-review-name">Beatriz F.</div>
+              <div class="eb-review-verified">
+                <svg viewBox="0 0 24 24" fill="#4285F4"><path d="M12 2L14.4 9.6H22L16.2 14.4L18.6 22L12 17.2L5.4 22L7.8 14.4L2 9.6H9.6L12 2Z"/></svg>
+                Reseña verificada de Google
+              </div>
+            </div>
+            <div class="eb-google-logo">
+              <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>
+            </div>
+          </div>
+          <div class="eb-stars">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <p class="eb-review-text">"Tenía endometriosis y nadie me había hablado nunca de cómo la alimentación puede ayudar. Con Elsa aprendí muchísimo y los cambios han sido notorios. Es una profesional de las pocas que realmente entiende esto."</p>
+        </div>
+
+      </div><!-- /slider-track -->
+    </div><!-- /slider-wrap -->
+    <div class="eb-slider-controls">
+      <button class="eb-slider-btn" id="eb-prev" onclick="ebSliderPrev()" aria-label="Anterior">&#8592;</button>
+      <div class="eb-slider-dots" id="eb-dots"></div>
+      <button class="eb-slider-btn" id="eb-next" onclick="ebSliderNext()" aria-label="Siguiente">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── UBICACIÓN ─────────────────────────────────────────────── -->
+<section id="eb-ubicacion" class="eb-section eb-section-cream">
+  <div class="eb-container">
+    <div style="text-align:center;max-width:600px;margin:0 auto 56px">
+      <span class="eb-section-label">Dónde encontrarme</span>
+      <h2 class="eb-section-title eb-fade">Consulta presencial <em>y online</em></h2>
+      <div class="eb-divider" style="margin:16px auto 0"></div>
+    </div>
+    <div class="eb-ubicacion-inner">
+      <div class="eb-loc-cards eb-fade">
+        <div class="eb-loc-card">
+          <div class="eb-loc-card-head">
+            <div class="eb-loc-icon">📍</div>
+            <div>
+              <h3>L'Eliana – Fede Jordán</h3>
+              <div class="eb-loc-card-sub">Consulta presencial</div>
+            </div>
+          </div>
+          <p class="eb-loc-addr">Clínica de Fisioterapia Fede Jordán<br>C/ Marquès de Càceres, 25<br>46183 L'Eliana (Valencia)</p>
+          <a href="https://www.google.com/maps/place/Fisioterapia+Fede+Jord%C3%A1n/@39.5665166,-0.5335365,17z" target="_blank" rel="noopener" class="eb-btn eb-btn-secondary" style="font-size:.85rem;padding:10px 24px">Ver en Google Maps →</a>
+        </div>
+        <div class="eb-loc-card">
+          <div class="eb-loc-card-head">
+            <div class="eb-loc-icon">🌐</div>
+            <div>
+              <h3>Consulta Online</h3>
+              <div class="eb-loc-card-sub">Desde cualquier lugar</div>
+            </div>
+          </div>
+          <p class="eb-loc-addr">Videollamada desde cualquier parte del mundo. Misma calidad de acompañamiento que en la consulta presencial. Solo necesitas conexión a internet.</p>
+          <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" rel="noopener" class="eb-btn eb-btn-primary" style="font-size:.85rem;padding:10px 24px">Pedir cita online →</a>
+        </div>
+      </div>
+      <div class="eb-loc-map-wrap eb-fade eb-fade-delay-2">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3080.123!2d-0.5335365!3d39.5665166!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd6059f558e0140d%3A0x887cb6ed98288e89!2sFisioterapia%20Fede%20Jord%C3%A1n!5e0!3m2!1ses!2ses!4v1716900000000"
+          width="100%" height="340" style="border:0;border-radius:24px" allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Ubicación de la consulta de Elsa Buendía en L'Eliana"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACTO ──────────────────────────────────────────────── -->
+<section id="eb-contacto" class="eb-section">
+  <div class="eb-container">
+    <div class="eb-contacto-inner">
+      <div class="eb-fade">
+        <span class="eb-section-label">Hablemos</span>
+        <h2 class="eb-section-title">Pide tu <em>cita</em></h2>
+        <div class="eb-divider"></div>
+        <p style="font-size:.95rem;color:var(--txm);line-height:1.8;margin-bottom:32px">¿Tienes dudas o quieres asegurarte de que puedo ayudarte? Escríbeme sin compromiso y hablamos.</p>
+        <div class="eb-contact-methods">
+          <a href="https://wa.me/34652043287?text=Hola%20Elsa%2C%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20tus%20consultas" target="_blank" rel="noopener" class="eb-contact-method">
+            <div class="eb-contact-method-icon"><svg class="eb-icon-svg eb-icon-whatsapp" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.051 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26C2.168 6.443 6.603 2.009 12.055 2.009c2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg></div>
+            <div class="eb-contact-method-text">
+              <div class="eb-contact-method-label">WhatsApp</div>
+              <div class="eb-contact-method-value">+34 652 04 32 87</div>
+            </div>
+            <span class="eb-contact-method-arrow">→</span>
+          </a>
+          <a href="mailto:hola@elsabuendianutricion.com" class="eb-contact-method">
+            <div class="eb-contact-method-icon"><svg class="eb-icon-svg eb-icon-gmail" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 27.6 6 14.2V38c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V14.2L24 27.6Z"/><path fill="#FBBC04" d="M6 14.2 24 27.6 42 14.2V10c0-2.2-1.8-4-4-4H10c-2.2 0-4 1.8-4 4v4.2Z"/><path fill="#34A853" d="M6 14.2V38c0 2.2 1.8 4 4 4h4V20.1L6 14.2Z"/><path fill="#4285F4" d="M34 20.1V42h4c2.2 0 4-1.8 4-4V14.2l-8 5.9Z"/></svg></div>
+            <div class="eb-contact-method-text">
+              <div class="eb-contact-method-label">Email</div>
+              <div class="eb-contact-method-value">hola@elsabuendianutricion.com</div>
+            </div>
+            <span class="eb-contact-method-arrow">→</span>
+          </a>
+          <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" rel="noopener" class="eb-contact-method">
+            <div class="eb-contact-method-icon"><svg class="eb-icon-svg eb-icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="4"/><path d="M8 2.5v4M16 2.5v4M3 9h18"/><path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/></svg></div>
+            <div class="eb-contact-method-text">
+              <div class="eb-contact-method-label">Reserva online</div>
+              <div class="eb-contact-method-value">Elige tu cita en Calendly</div>
+            </div>
+            <span class="eb-contact-method-arrow">→</span>
+          </a>
+        </div>
+        <a href="https://www.instagram.com/elsabuendia.nutricion/" target="_blank" rel="noopener"
+           style="display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--txl);transition:color .2s"
+           onmouseover="this.style.color='var(--g)'" onmouseout="this.style.color='var(--txl)'">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          @elsabuendia.nutricion
+        </a>
+      </div>
+      <div class="eb-form eb-fade eb-fade-delay-2">
+        <h3 class="eb-form-title">Envíame un mensaje</h3>
+        <p class="eb-form-sub">Cuéntame brevemente en qué te puedo ayudar y te responderé en menos de 24 h.</p>
+        <div class="eb-form-row">
+          <div class="eb-form-group">
+            <label for="eb-nombre">Nombre *</label>
+            <input type="text" id="eb-nombre" placeholder="Tu nombre" required>
+          </div>
+          <div class="eb-form-group">
+            <label for="eb-email">Email *</label>
+            <input type="email" id="eb-email" placeholder="tu@email.com" required>
+          </div>
+        </div>
+        <div class="eb-form-group">
+          <label for="eb-telefono">Teléfono</label>
+          <input type="tel" id="eb-telefono" placeholder="+34 600 000 000">
+        </div>
+        <div class="eb-form-group">
+          <label for="eb-motivo">Motivo de consulta</label>
+          <select id="eb-motivo">
+            <option value="">Selecciona una opción</option>
+            <option>Salud hormonal femenina</option>
+            <option>Embarazo y lactancia</option>
+            <option>Alimentación infantil</option>
+            <option>Problemas digestivos</option>
+            <option>Educación nutricional</option>
+            <option>Alimentación vegetal</option>
+            <option>Charlas / talleres</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="eb-form-group">
+          <label for="eb-mensaje">Mensaje</label>
+          <textarea id="eb-mensaje" placeholder="Cuéntame brevemente tu situación y qué te gustaría trabajar..."></textarea>
+        </div>
+        <button class="eb-btn eb-btn-primary eb-form-submit" onclick="ebSubmitForm()">Enviar mensaje →</button>
+        <div class="eb-form-ok" id="eb-form-ok">
+          <p>✅ ¡Mensaje enviado! Te responderé en menos de 24 horas.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA FINAL ──────────────────────────────────────────────── -->
+<section id="eb-cta-final">
+  <div class="eb-cta-final-deco"></div>
+  <div class="eb-container">
+    <h2 class="eb-fade">Empieza el cambio <em>ahora</em></h2>
+    <p class="eb-fade eb-fade-delay-1">No se trata de hacerlo perfecto, sino de avanzar con calma, coherencia y apoyo profesional.</p>
+    <div class="eb-cta-final-btns eb-fade eb-fade-delay-2">
+      <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank" class="eb-btn eb-btn-gold">Pedir cita →</a>
+      <a href="https://wa.me/34652043287" target="_blank" class="eb-btn" style="background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25)">
+        <svg class="eb-icon-svg eb-icon-whatsapp" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347M12.051 21.785h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26C2.168 6.443 6.603 2.009 12.055 2.009c2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/></svg>
+        Escribir por WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer id="eb-footer">
+  <div class="eb-container">
+    <div class="eb-footer-inner">
+      <div class="eb-footer-brand">
+        <div class="eb-logo">
+          <svg class="eb-logo-svg" viewBox="0 0 36 36" fill="none">
+            <circle cx="18" cy="18" r="17" stroke="#7A9E7E" stroke-width="1.5"/>
+            <path d="M18 8C13.5 8 10 12 10 17C10 21.5 13 24.5 16 25.5V28H20V25.5C23 24.5 26 21.5 26 17C26 12 22.5 8 18 8Z" fill="#7A9E7E" opacity=".3"/>
+            <path d="M18 10C14.7 10 12 13.1 12 17C12 20.4 14.2 23 17 23.8V27H19V23.8C21.8 23 24 20.4 24 17C24 13.1 21.3 10 18 10Z" fill="#fff"/>
+            <circle cx="18" cy="17" r="4" fill="#C8A97A"/>
+          </svg>
+          <span class="eb-logo-text">
+            <span class="eb-logo-name">Elsa Buendía</span>
+            <span class="eb-logo-tag">Dietista · Nutricionista</span>
+          </span>
+        </div>
+        <p class="eb-footer-tagline">Nutrición personalizada, basada en evidencia y alejada de la cultura de la dieta. Presencial en L'Eliana y online.</p>
+        <div class="eb-footer-social">
+          <a href="https://www.instagram.com/elsabuendia.nutricion/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="mailto:hola@elsabuendianutricion.com" aria-label="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </a>
+          <a href="https://wa.me/34652043287" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="eb-footer-col">
+        <h4>Navegación</h4>
+        <a href="#eb-sobre"           onclick="ebSmoothScroll(event,'#eb-sobre')">Sobre mí</a>
+        <a href="#eb-especialidades"  onclick="ebSmoothScroll(event,'#eb-especialidades')">Especialidades</a>
+        <a href="#eb-servicios"       onclick="ebSmoothScroll(event,'#eb-servicios')">Servicios</a>
+        <a href="#eb-tarifas"         onclick="ebSmoothScroll(event,'#eb-tarifas')">Tarifas</a>
+        <a href="#eb-faq"             onclick="ebSmoothScroll(event,'#eb-faq')">FAQ</a>
+      </div>
+      <div class="eb-footer-col">
+        <h4>Contacto</h4>
+        <a href="https://wa.me/34652043287" target="_blank">💬 +34 652 04 32 87</a>
+        <a href="mailto:hola@elsabuendianutricion.com">✉️ hola@elsabuendianutricion.com</a>
+        <a href="#eb-ubicacion" onclick="ebSmoothScroll(event,'#eb-ubicacion')">📍 L'Eliana (Valencia)</a>
+        <a href="https://calendly.com/elsabuendia-nutricion/seguimiento-nutricion-presencial" target="_blank">📅 Pedir cita online</a>
+      </div>
+      <div class="eb-footer-col">
+        <h4>Legal</h4>
+        <a href="#">Aviso legal</a>
+        <a href="#">Política de privacidad</a>
+        <a href="#">Política de cookies</a>
+        <a href="https://www.instagram.com/elsabuendia.nutricion/" target="_blank">Instagram</a>
+      </div>
+    </div>
+    <div class="eb-footer-bottom">
+      <span class="eb-footer-copy">© 2026 Elsa Buendía Nutrición · Dietista-Nutricionista colegiada CV01793</span>
+      <div class="eb-footer-legal">
+        <a href="#">Aviso legal</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WHATSAPP FLOTANTE ──────────────────────────────────────── -->
+<a id="eb-wa-btn" href="https://wa.me/34652043287?text=Hola%20Elsa%2C%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20tus%20consultas" target="_blank" rel="noopener" aria-label="Contactar por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+  <span>Escríbeme</span>
+</a>
+
+</div><!-- /eb-wrap -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script>
+(function(){
+
+/* ── HEADER SCROLL ── */
+var header = document.getElementById('eb-header');
+window.addEventListener('scroll', function(){
+  if(window.scrollY > 60) header.classList.add('eb-scrolled');
+  else header.classList.remove('eb-scrolled');
+}, {passive:true});
+
+/* ── SMOOTH SCROLL ── */
+window.ebSmoothScroll = function(e, selector){
+  e.preventDefault();
+  var el = document.querySelector(selector);
+  if(!el) return;
+  var offset = 80;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({top:top, behavior:'smooth'});
+};
+
+/* ── MENU MÓVIL ── */
+window.ebToggleMenu = function(){
+  var nav = document.getElementById('eb-mobile-nav');
+  var hb  = document.getElementById('eb-hamburger');
+  var ov  = document.getElementById('eb-overlay');
+  var open = nav.classList.toggle('eb-open');
+  hb.classList.toggle('eb-open', open);
+  ov.classList.toggle('eb-open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+};
+window.ebCloseMenu = function(){
+  document.getElementById('eb-mobile-nav').classList.remove('eb-open');
+  document.getElementById('eb-hamburger').classList.remove('eb-open');
+  document.getElementById('eb-overlay').classList.remove('eb-open');
+  document.body.style.overflow = '';
+};
+
+/* ── INTERSECTION OBSERVER (fade-in) ── */
+var io = new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('eb-visible'); io.unobserve(e.target); }
+  });
+}, {threshold:0.12});
+document.querySelectorAll('#eb-wrap .eb-fade').forEach(function(el){ io.observe(el); });
+
+/* ── FAQ ACCORDION ── */
+window.ebToggleFaq = function(btn){
+  var item = btn.parentElement;
+  var isOpen = item.classList.contains('eb-open');
+  document.querySelectorAll('#eb-faq .eb-faq-item.eb-open').forEach(function(i){ i.classList.remove('eb-open'); });
+  if(!isOpen) item.classList.add('eb-open');
+};
+
+/* ── SLIDER TESTIMONIOS ── */
+var sliderTrack = document.getElementById('eb-slider-track');
+var dotsWrap    = document.getElementById('eb-dots');
+var cards       = sliderTrack ? sliderTrack.querySelectorAll('.eb-review-card') : [];
+var total       = cards.length;
+var current     = 0;
+var perView     = 3;
+var autoTimer;
+
+function ebGetPerView(){
+  return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+}
+
+function ebSliderPages(){ return Math.ceil(total / ebGetPerView()); }
+
+function ebUpdateSlider(){
+  perView = ebGetPerView();
+  var cardW = sliderTrack.parentElement.offsetWidth;
+  var gap = 20;
+  var w = (cardW - gap*(perView-1)) / perView;
+  cards.forEach(function(c){ c.style.flex = '0 0 '+w+'px'; c.style.marginRight = gap+'px'; });
+  var page = Math.floor(current / perView);
+  if(page >= ebSliderPages()) { page = 0; current = 0; }
+  var offset = page * (w + gap) * perView;
+  sliderTrack.style.transform = 'translateX(-'+offset+'px)';
+  // dots
+  dotsWrap.innerHTML = '';
+  for(var i=0;i<ebSliderPages();i++){
+    (function(idx){
+      var d = document.createElement('button');
+      d.className = 'eb-slider-dot' + (idx===page?' eb-active':'');
+      d.setAttribute('aria-label','Ir a página '+(idx+1));
+      d.onclick = function(){ current=idx*ebGetPerView(); ebUpdateSlider(); ebResetAuto(); };
+      dotsWrap.appendChild(d);
+    })(i);
+  }
+}
+
+window.ebSliderNext = function(){
+  perView = ebGetPerView();
+  current = current + perView;
+  if(current >= total) current = 0;
+  ebUpdateSlider(); ebResetAuto();
+};
+window.ebSliderPrev = function(){
+  perView = ebGetPerView();
+  current = current - perView;
+  if(current < 0) current = Math.floor((total-1)/perView)*perView;
+  ebUpdateSlider(); ebResetAuto();
+};
+
+function ebStartAuto(){ autoTimer = setInterval(function(){ ebSliderNext(); }, 5000); }
+function ebResetAuto(){ clearInterval(autoTimer); ebStartAuto(); }
+
+if(sliderTrack){ ebUpdateSlider(); ebStartAuto(); }
+window.addEventListener('resize', function(){ ebUpdateSlider(); }, {passive:true});
+
+/* ── TOUCH SLIDER ── */
+var tsX = 0;
+if(sliderTrack){
+  sliderTrack.addEventListener('touchstart', function(e){ tsX = e.touches[0].clientX; }, {passive:true});
+  sliderTrack.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - tsX;
+    if(Math.abs(dx) > 40){ dx < 0 ? ebSliderNext() : ebSliderPrev(); }
+  }, {passive:true});
+}
+
+/* ── FORM (simulado, conectar a backend o WP Contact Form 7) ── */
+window.ebSubmitForm = function(){
+  var n = document.getElementById('eb-nombre').value.trim();
+  var e = document.getElementById('eb-email').value.trim();
+  if(!n || !e){ alert('Por favor, rellena los campos obligatorios (nombre y email).'); return; }
+  // Aquí puedes conectar con wp-mail, Contact Form 7, Forminator, etc.
+  // Por ahora muestra el mensaje de éxito:
+  document.getElementById('eb-form-ok').style.display = 'block';
+  document.getElementById('eb-nombre').value='';
+  document.getElementById('eb-email').value='';
+  document.getElementById('eb-telefono').value='';
+  document.getElementById('eb-motivo').value='';
+  document.getElementById('eb-mensaje').value='';
+  setTimeout(function(){ document.getElementById('eb-form-ok').style.display='none'; }, 5000);
+};
+
+
+/* Interacciones visuales añadidas */
+var ebTiltCards = document.querySelectorAll('#eb-wrap .eb-quien-card, #eb-wrap .eb-esp-card, #eb-wrap .eb-servicio-card, #eb-wrap .eb-tarifa-card, #eb-wrap .eb-loc-card, #eb-wrap .eb-contact-method');
+ebTiltCards.forEach(function(card){
+  card.classList.add('eb-card-tilt');
+  card.addEventListener('mousemove', function(e){
+    if(window.innerWidth < 900) return;
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - .5;
+    var y = (e.clientY - r.top) / r.height - .5;
+    card.style.transform = 'perspective(900px) rotateX('+(-y*3)+'deg) rotateY('+(x*3)+'deg) translateY(-6px)';
+  });
+  card.addEventListener('mouseleave', function(){
+    card.style.transform = '';
+  });
+});
+
+var ebHeroFrame = document.querySelector('#eb-hero .eb-hero-img-frame');
+if(ebHeroFrame){
+  window.addEventListener('scroll', function(){
+    var y = Math.min(window.scrollY, 420);
+    ebHeroFrame.style.transform = 'rotate(1.2deg) translateY('+(y * .025)+'px)';
+  }, {passive:true});
+}
+
+})();
+</script>
