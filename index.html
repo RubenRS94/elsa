@@ -1,4 +1,5 @@
 <!-- VERSION VERIFICADA V3 AJUSTES VISUALES SOLICITADOS 2026-05-29 -->
+<!-- VERSION VERIFICADA V4 AJUSTES FINALES FOOTER SLIDER PROCESO 2026-05-29 -->
 <!-- ============================================================
      ELSA BUENDÍA NUTRICIÓN · Web completa autocontenida
      Para pegar en: WordPress > Página > Bloque HTML personalizado
@@ -1085,6 +1086,44 @@
 #eb-wrap .eb-footer-contact .eb-icon-location { color: #ffffff !important; }
 #eb-wrap .eb-footer-col a { color: rgba(255,255,255,.90) !important; }
 #eb-wrap .eb-footer-col a:hover { color: #ffffff !important; }
+
+
+/* ============================================================
+   AJUSTES VERIFICADOS V4
+   Footer legible, slider manual y proceso centrado en desktop.
+   ============================================================ */
+#eb-wrap #eb-footer .eb-footer-tagline {
+  color: #ffffff !important;
+}
+#eb-wrap #eb-footer .eb-footer-social a {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.36) !important;
+  background: rgba(255,255,255,.08) !important;
+}
+#eb-wrap #eb-footer .eb-footer-social a svg {
+  color: #ffffff !important;
+  stroke: currentColor !important;
+}
+#eb-wrap #eb-footer .eb-footer-social a:hover {
+  color: #ffffff !important;
+  border-color: rgba(255,255,255,.72) !important;
+  background: rgba(255,255,255,.16) !important;
+}
+#eb-wrap #eb-proceso .eb-quote-block p {
+  font-size: clamp(1.28rem, 1.45vw, 1.52rem) !important;
+  line-height: 1.65 !important;
+  color: #ffffff !important;
+}
+#eb-wrap #eb-proceso .eb-quote-block cite {
+  font-size: .98rem !important;
+  line-height: 1.55 !important;
+  color: rgba(255,255,255,.88) !important;
+}
+@media (min-width: 769px) {
+  #eb-wrap #eb-proceso .eb-proceso-inner > div:last-child {
+    align-self: center !important;
+  }
+}
 
 </style>
 
@@ -2211,7 +2250,8 @@ var cards       = sliderTrack ? sliderTrack.querySelectorAll('.eb-review-card') 
 var total       = cards.length;
 var current     = 0;
 var perView     = 3;
-var autoTimer;
+/* Sin rotación automática: el slider solo cambia con flechas, puntos o gesto táctil. */
+var autoTimer = null;
 
 function ebGetPerView(){
   return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
@@ -2236,7 +2276,7 @@ function ebUpdateSlider(){
       var d = document.createElement('button');
       d.className = 'eb-slider-dot' + (idx===page?' eb-active':'');
       d.setAttribute('aria-label','Ir a página '+(idx+1));
-      d.onclick = function(){ current=idx*ebGetPerView(); ebUpdateSlider(); ebResetAuto(); };
+      d.onclick = function(){ current=idx*ebGetPerView(); ebUpdateSlider(); };
       dotsWrap.appendChild(d);
     })(i);
   }
@@ -2246,19 +2286,19 @@ window.ebSliderNext = function(){
   perView = ebGetPerView();
   current = current + perView;
   if(current >= total) current = 0;
-  ebUpdateSlider(); ebResetAuto();
+  ebUpdateSlider();
 };
 window.ebSliderPrev = function(){
   perView = ebGetPerView();
   current = current - perView;
   if(current < 0) current = Math.floor((total-1)/perView)*perView;
-  ebUpdateSlider(); ebResetAuto();
+  ebUpdateSlider();
 };
 
-function ebStartAuto(){ autoTimer = setInterval(function(){ ebSliderNext(); }, 5000); }
-function ebResetAuto(){ clearInterval(autoTimer); ebStartAuto(); }
+function ebStartAuto(){ return false; }
+function ebResetAuto(){ return false; }
 
-if(sliderTrack){ ebUpdateSlider(); ebStartAuto(); }
+if(sliderTrack){ ebUpdateSlider(); }
 window.addEventListener('resize', function(){ ebUpdateSlider(); }, {passive:true});
 
 /* ── TOUCH SLIDER ── */
